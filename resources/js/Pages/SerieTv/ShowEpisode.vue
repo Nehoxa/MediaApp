@@ -1,0 +1,21 @@
+<template>
+  <AppLayout>
+    <div class="pb-6 text-white">
+      <EpisodeDetails :episode="episode" />
+      <EpisodeCredits :credits="credits" />
+    </div>
+  </AppLayout>
+</template>
+
+<script setup>
+import AppLayout from '@/Layouts/AppLayout.vue';
+import EpisodeDetails from '@/Components/EpisodeDetails.vue';
+import EpisodeCredits from '@/Components/EpisodeCredits.vue';
+
+const props = defineProps({
+  episode: Object,
+  credits: Object,
+});
+</script>
+
+<style scopted></style>
