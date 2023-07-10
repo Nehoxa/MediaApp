@@ -1,15 +1,10 @@
 <template>
   <AppLayout>
     <div class="w-full h-full pb-6">
-      <div v-if="!statusMessage">
-        <TvShowDetails :serie="serie" />
-        <TvShowSeason :idTvShow="serie.id" :seasons="serie.seasons" />
-        <TvShowCredits :credits="credits" v-if="credits.cast.length > 0" />
-        <TvShowRelated :recommendations="recommendations" />
-      </div>
-      <div v-if="statusMessage" class="text-white text-3xl flex justify-center mt-32">
-        {{ statusMessage }}
-      </div>
+      <TvShowDetails :serie="serie" />
+      <TvShowSeason :idTvShow="serie.id" :seasons="serie.seasons" />
+      <TvShowCredits :credits="credits" v-if="credits.cast.length > 0" />
+      <TvShowRelated :recommendations="recommendations" />
     </div>
   </AppLayout>
 </template>
@@ -25,6 +20,5 @@ const props = defineProps({
   serie: Object,
   credits: Object,
   recommendations: Object,
-  statusMessage: String,
 });
 </script>

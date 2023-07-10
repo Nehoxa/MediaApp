@@ -9,7 +9,7 @@
       </div>
       <div class="flex flex-col items-start m-8 max-w-screen-2xl">
         <div class="w-full flex justify-center">
-          <Pagination class="m-2 p-2 flex justify-center" :links="links"  v-if="results.total_pages != 1"/>
+          <Pagination class="m-2 p-2 flex justify-center" :links="links" v-if="results.total_pages != 1" />
         </div>
         <Link :href="getLink(result.media_type, result.id)" v-for="result in results.results" :key="result.id"
           class="mb-8 flex hover:bg-gradient-to-b from-gray-950 to-gray-700 cursor-pointer w-full rounded-xl">
@@ -17,12 +17,22 @@
         <div class="ml-4">
           <div class="text-xl font-bold hover:text-gray-300">{{ result.title ? result.title : result.name }}</div>
           <div class="mb-3 text-gray-300">{{ result.release_date ? formatDate(result.release_date) : '' }}</div>
-          <div>{{ result.overview ? result.overview : '' }}</div>
+          <div>{{ result.overview ? formatedOverview(result.overview, 380) : '' }}</div>
+          <div class="flex mt-3">
+            <span class="mr-1">{{ parseFloat(result.vote_average.toFixed(1)) }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+              <path fill-rule="evenodd"
+                d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+                clip-rule="evenodd" />
+            </svg>
+            <span>{{ result.vote_count ? "- (" + result.vote_count + ") votes" : "" }}</span>
+          </div>
+
         </div>
         </Link>
         <div class="text-xl font-bold mt-12" v-if="results.results.length === 0">
-        Aucun resultat trouvé
-      </div>
+          Aucun resultat trouvé
+        </div>
       </div>
     </div>
   </AppLayout>
@@ -61,6 +71,20 @@ function getLink(mediaType, id) {
     return route('person.show', id)
   }
 }
+
+function formatedOverview(overview, maxCharacters) {
+  if (overview.length <= maxCharacters) {
+    return overview;
+  } else {
+    let shortenedText = overview.slice(0, maxCharacters);
+    const lastSpaceIndex = shortenedText.lastIndexOf(" ");
+    if (lastSpaceIndex !== -1) {
+      shortenedText = shortenedText.slice(0, lastSpaceIndex);
+    }
+    return shortenedText + "...";
+  }
+}
+
 </script>
 
 <style lang="scss" scoped></style>

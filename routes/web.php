@@ -21,18 +21,18 @@ use Inertia\Inertia;
 
 Route::get('/', [MovieController::class, 'home'])->name('movie.home');
 
-Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search/multi', [SearchController::class, 'search'])->name('search');
 Route::get('/search/movie', [SearchController::class, 'searchMovie'])->name('search.movie');
 Route::get('/search/serie', [SearchController::class, 'searchSerie'])->name('search.serie');
 Route::get('/search/person', [SearchController::class, 'searchPerson'])->name('search.person');
 
 Route::get('/movie', [MovieController::class, 'index'])->name('movie.index');
-Route::get('/serie', [SerieTvController::class, 'index'])->name('serie.index');
-
 Route::get('/movie/{id}', [MovieController::class, 'show'])->name('movie.show');
 Route::get('/movie/collection/{id}', [MovieController::class, 'showCollection'])->name('movie.showCollection');
+
 Route::get('/person/{id}', [PersonController::class, 'show'])->name('person.show');
 
+Route::get('/serie', [SerieTvController::class, 'index'])->name('serie.index');
 Route::get('/serie/{id}', [SerieTvController::class, 'show'])->name('serie.show');
 Route::get('/serie/{id}/{season}', [SerieTvController::class, 'showSeason'])->name('serie.showSeason');
 Route::get('/serie/{id}/{season}/{episode}', [SerieTvController::class, 'showEpisode'])->name('serie.showEpisode');

@@ -3,83 +3,100 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Inertia\Response;
+use App\Services\Tmdb\Facades\Tmdb;
+use Illuminate\Support\Facades\Cache;
 
 class SerieTvController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of serie.
+     * 
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(): Response
     {
-        $api_key = config('tmdb.api_key');
-        $language = config('tmdb.language');
-        $endpoint = config('tmdb.endpoint');
+        $series = Tmdb::seriesList();
 
-        $genres = Http::get($endpoint . 'genre/tv/list' . '?api_key=' . $api_key . $language)->json();
+        $genres = Cache::remember('genres', now()->addMinute(), function () {
+            return Tmdb::genresList();
+        });
 
-        $series = Http::get($endpoint . 'trending/tv/week' . '?api_key=' . $api_key . $language)->json();
+        $statusMessage = null;
+        if (array_key_exists('status_message', $series)) {
+            $statusMessage = $series['status_message'];
+            return Inertia::render('Error/Error', compact('statusMessage'));
+        }
 
         return Inertia::render('SerieTv/SeriesHomePage', compact('series', 'genres'));
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified serie.
+     * 
+     * @param integer $id
+     * @return \Inertia\Response
      */
-    public function show(int $id)
+    public function show(int $id): Response
     {
-        $api_key = '?api_key=' . config('tmdb.api_key');
-        $language = config('tmdb.language');
-        $endpoint = config('tmdb.endpoint');
-
-        $serie = Http::get($endpoint . 'tv/' . $id . $api_key . $language)->json();
+        $serie = Cache::remember('serie' . $id, now()->addMinute(), function () use ($id) {
+            return Tmdb::showSerie($id);
+        });
 
         $statusMessage = null;
         if (array_key_exists('status_message', $serie)) {
             $statusMessage = $serie['status_message'];
+            return Inertia::render('Error/Error', compact('statusMessage'));
         }
 
-        $credits = Http::get($endpoint . 'tv/' . $id . '/credits' . $api_key . $language)->json();
+        $credits = Cache::remember('credits' . $id, now()->addMinute(), function () use ($id) {
+            return Tmdb::serieCredit($id);
+        });
+        $recommendations = Cache::remember('recommendations' . $id, now()->addMinute(), function () use ($id) {
+            return Tmdb::serieRelated($id);
+        });
 
-        $recommendations = Http::get($endpoint . 'tv/' . $id . '/recommendations' . $api_key . $language)->json();
-
-        return Inertia::render('SerieTv/Show', compact('serie', 'credits', 'recommendations', 'statusMessage'));
+        return Inertia::render('SerieTv/Show', compact('serie', 'credits', 'recommendations'));
     }
 
-    public function showSeason(int $id, int $season)
+        /**
+     * Display the specified season of serie.
+     * 
+     * @param integer $id
+     * @param integer $season
+     * @return \Inertia\Response
+     */
+    public function showSeason(int $id, int $season): Response
     {
-        $api_key = '?api_key=' . config('tmdb.api_key');
-        $language = config('tmdb.language');
-        $endpoint = config('tmdb.endpoint');
+        $season = Cache::remember('serie' . $id . 'season' . $season, now()->addMinute(), function () use ($id, $season) {
+            return Tmdb::showSeason($id, $season);
+        });
 
-        $season = Http::get($endpoint . 'tv/' . $id . '/season/' . $season . $api_key . $language)->json();
+        $statusMessage = null;
+        if (array_key_exists('status_message', $season)) {
+            $statusMessage = $season['status_message'];
+            return Inertia::render('Error/Error', compact('statusMessage'));
+        }
 
         return Inertia::render('SerieTv/ShowSeason', compact('season', ));
     }
 
-    public function showEpisode(int $id, int $season, int $episode)
+    public function showEpisode(int $id, int $season, int $nbEpisode)
     {
-        $api_key = '?api_key=' . config('tmdb.api_key');
-        $language = config('tmdb.language');
-        $endpoint = config('tmdb.endpoint');
+        $episode = Cache::remember('serie' . $id . 'season' . $season . 'epsiode' . $nbEpisode , now()->addMinute(), function () use ($id, $season, $nbEpisode) {
+            return Tmdb::showEpisode($id, $season, $nbEpisode);
+        });
 
-        $credits = Http::get($endpoint . 'tv/' . $id . '/season/' . $season . '/episode/' . $episode . '/credits' . $api_key . $language)->json();
-        $episode = Http::get($endpoint . 'tv/' . $id . '/season/' . $season . '/episode/' . $episode . $api_key . $language)->json();
+        $credits = Cache::remember('credits' . $id . 'season' . $season . 'epsiode' . $nbEpisode , now()->addMinute(), function () use ($id, $season, $nbEpisode) {
+            return Tmdb::creditsEpisode($id, $season, $nbEpisode);
+        });
+
+        $statusMessage = null;
+        if (array_key_exists('status_message', $episode)) {
+            $statusMessage = $episode['status_message'];
+            return Inertia::render('Error/Error', compact('statusMessage'));
+        }
 
         return Inertia::render('SerieTv/ShowEpisode', compact('episode', 'credits'));
-    }
-
-    public function search(String $search)
-    {
-        // $search = $request->search;
-
-        $api_key = '&api_key=' . config('tmdb.api_key');
-        $language = config('tmdb.language');
-        $endpoint = config('tmdb.endpoint');
-
-        $results = Http::get($endpoint . 'search/tv?query=' . $search . '&include_adult=false' . $api_key . $language)->json();
-
-        return Inertia::render('Search/Index', compact('results'));
     }
 }

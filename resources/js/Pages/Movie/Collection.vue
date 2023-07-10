@@ -27,6 +27,9 @@
           <CollectionCard :movie="movie" />
         </div>
       </div>
+      <div v-if="statusMessage" class="text-white text-3xl flex justify-center mt-32">
+        {{ statusMessage }}
+      </div>
     </div>
   </AppLayout>
 </template>
@@ -38,6 +41,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 
 defineProps({
   collection: Object,
+  statusMessage: String
 });
 
 </script>

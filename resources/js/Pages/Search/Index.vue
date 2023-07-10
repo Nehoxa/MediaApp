@@ -20,8 +20,8 @@
               <div class="font-bold hover:text-gray-300 mr-2">{{ result.title ? result.title : result.name }}</div>
               <div class="text-slate-500">{{ result.media_type ? '- ' + getType(result.media_type) : '' }}</div>
             </div>
-            <div class="mb-3 text-gray-300">{{ result.release_date ? formatDate(result.release_date) : '' }}</div>
-            <div>{{ result.overview ? result.overview : '' }}</div>
+            <div class="mb-3 text-gray-300">{{ result.release_date ? formatDate(result.release_date) : formatDate(result.first_air_date) }}</div>
+            <div>{{ result.overview ? formatedOverview(result.overview, 380) : '' }}</div>
             <div class="flex mt-3">
               <span class="mr-1">{{ parseFloat(result.vote_average.toFixed(1)) }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
@@ -37,10 +37,12 @@
         <div v-if="result.media_type === 'person' || result.media_type === 'production'" class="flex">
           <img class="h-40 shadow-lg max-w-none rounded-l-xl" :src="getPoster(result.profile_path)" alt="">
           <div class="ml-4">
-            <Link :href="getLink(result.media_type, result.id)" class="text-xl font-bold hover:text-gray-300">{{
-              result.name ? result.name :
-              '' }}</Link>
-            <div class="mb-3 text-gray-300">{{ result.known_for_department ? result.known_for_department : '' }}</div>
+            <div class="flex text-xl">
+              <Link :href="getLink(result.media_type, result.id)" class="font-bold hover:text-gray-300 mr-2">{{
+                result.name ? result.name :
+                '' }}</Link>
+              <div class="mb-3 text-slate-500">{{ result.known_for_department ? '- ' + result.known_for_department : '' }}</div>
+            </div>
             <span v-if="result.known_for.length > 0">Connu(e) pour : </span>
             <Link class="hover:text-gray-300" :href="getLink(project.media_type, project.id)"
               v-for="project in result.known_for" :key="project.id">{{
@@ -100,6 +102,20 @@ function getType(mediaType) {
     return ''
   }
 }
+
+function formatedOverview(overview, maxCharacters) {
+  if (overview.length <= maxCharacters) {
+    return overview;
+  } else {
+    let shortenedText = overview.slice(0, maxCharacters);
+    const lastSpaceIndex = shortenedText.lastIndexOf(" ");
+    if (lastSpaceIndex !== -1) {
+      shortenedText = shortenedText.slice(0, lastSpaceIndex);
+    }
+    return shortenedText + "...";
+  }
+}
+
 </script>
 
 <style lang="scss" scoped></style>
