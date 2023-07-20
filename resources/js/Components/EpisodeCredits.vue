@@ -15,7 +15,7 @@
       <div>
         <h3 class="text-2xl font-bold ml-6 mb-6">Artistes invités :</h3>
         <div class="flex flex-wrap">
-          <Link :href="route('person.show', person.id)" v-for="person in credits.guest_stars" class="w-32 mx-4 my-2">
+          <Link :href="route('person.show', person.id)" v-for="person in credits.guestStars" class="w-32 mx-4 my-2">
             <img :src="getPortrait(person.profile_path)" alt="" class="rounded-lg h-48">
             <div class="font-bold my-1 text-lg">{{ person.name }}</div>
             <div class="">{{ person.character }}</div>

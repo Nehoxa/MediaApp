@@ -1,14 +1,14 @@
 <template>
-  <AppLayout>
+  <AppLayout :statusCode="collection.statusCode" :statusMessage="collection.statusMessage" >
     <div class="pb-6">
       <div className="collection">
         <div className="collection__intro">
           <div className="fade"></div>
-          <img className="collection__backdrop" :src="'https://image.tmdb.org/t/p/original' + collection.backdrop_path" />
+          <img className="collection__backdrop" :src="'https://image.tmdb.org/t/p/original' + collection.backdropPath" />
           <div className="collection__detail">
             <div className="collection__detailLeft">
               <div className="collection__posterBox">
-                <img className="collection__poster" :src="'https://image.tmdb.org/t/p/w400' + collection.poster_path" />
+                <img className="collection__poster" :src="'https://image.tmdb.org/t/p/w400' + collection.posterPath" />
               </div>
             </div>
             <div className="collection__detailRight">
@@ -26,9 +26,6 @@
         <div className="body" v-for="movie in collection.parts">
           <CollectionCard :movie="movie" />
         </div>
-      </div>
-      <div v-if="statusMessage" class="text-white text-3xl flex justify-center mt-32">
-        {{ statusMessage }}
       </div>
     </div>
   </AppLayout>

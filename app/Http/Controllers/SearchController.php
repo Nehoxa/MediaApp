@@ -52,12 +52,6 @@ class SearchController extends Controller
 
         $results = Tmdb::movieSearch($query, $page);
 
-        $statusMessage = null;
-        if (array_key_exists('status_message', $results)) {
-            $statusMessage = $results['status_message'];
-            return Inertia::render('Error/Error', compact('statusMessage'));
-        }
-
         $data['search'] = $query;
         $data['page'] = 1;
 
@@ -79,12 +73,6 @@ class SearchController extends Controller
 
         $results = Tmdb::serieSearch($query, $page);
 
-        $statusMessage = null;
-        if (array_key_exists('status_message', $results)) {
-            $statusMessage = $results['status_message'];
-            return Inertia::render('Error/Error', compact('statusMessage'));
-        }
-
         $data['search'] = $query;
         $data['page'] = 1;
 
@@ -105,12 +93,6 @@ class SearchController extends Controller
         $page = $request->page;
 
         $results = Tmdb::personSearch($query, $page);
-
-        $statusMessage = null;
-        if (array_key_exists('status_message', $results)) {
-            $statusMessage = $results['status_message'];
-            return Inertia::render('Error/Error', compact('statusMessage'));
-        }
 
         $data['search'] = $query;
         $data['page'] = 1;

@@ -1,15 +1,15 @@
 <template>
-  <AppLayout>
-    <div class="w-full h-full text-white" v-if="!statusMessage">
+  <AppLayout :statusCode="person.statusCode" :statusMessage="person.statusMessage" >
+    <div class="w-full h-full text-white" v-if="person.statusCode === 200">
       <div className="fade"></div>
       <div className="details">
         <div className="image_content">
-          <img className="image" :src="'https://image.tmdb.org/t/p/w200' + person.profile_path" alt="">
+          <img className="image" :src="'https://image.tmdb.org/t/p/w200' + person.profilePath" alt="">
         </div>
         <div className="name">{{ person.name }}</div>
-        <div className="department">Métier : {{ person.known_for_department }}</div>
+        <div className="department">Métier : {{ person.knownForDepartment }}</div>
         <div className="birthday">Naissance : {{ formatDate(person.birthday) }}</div>
-        <div className="birthday">Lieu de naissance : {{ person.place_of_birth }}</div>
+        <div className="birthday">Lieu de naissance : {{ person.placeOfBirth }}</div>
         <div className="birthday">{{ 'Âge : ' + getOld(person.birthday, person.deathday) + ' ans' }}</div>
         <div className="birthday"> {{ person.deathday ? 'Décès :' + formatDate(person.deathday) : '' }}</div>
         <div className="biography" v-if="person.biography">

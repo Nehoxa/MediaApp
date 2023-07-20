@@ -1,6 +1,6 @@
 <template>
-  <AppLayout>
-    <div class="w-full h-full pb-6">
+  <AppLayout :statusCode="serie.statusCode" :statusMessage="serie.statusMessage" >
+    <div class="w-full h-full pb-6" v-if="serie.statusCode === 200">
       <TvShowDetails :serie="serie" />
       <TvShowSeason :idTvShow="serie.id" :seasons="serie.seasons" />
       <TvShowCredits :credits="credits" v-if="credits.cast.length > 0" />

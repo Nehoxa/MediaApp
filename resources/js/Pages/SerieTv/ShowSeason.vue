@@ -1,12 +1,12 @@
 <template>
-  <AppLayout>
+  <AppLayout :statusCode="season.statusCode" :statusMessage="season.statusMessage" >
     <div class="w-full h-full pb-6 text-white">
       <div class="flex justify-center">
         <div class="flex flex-col lg:flex-row w-4/5 items-center">
-          <img class="h-150 rounded-b-lg" :src="'https://image.tmdb.org/t/p/original' + season.poster_path" />
+          <img class="h-150 rounded-b-lg" :src="'https://image.tmdb.org/t/p/original' + season.posterPath" />
           <div class="mt-8 lg:ml-6 lg:mt-0 flex flex-col items-center lg:items-start">
-            <h1 class="text-7xl font-bold">{{ season.season_number ? 'Saison ' + season.season_number : season.name }}</h1>
-            <div class="mt-6">{{ season.air_date ? 'Sorti le ' + formatDate(season.air_date) : '' }}</div>
+            <h1 class="text-7xl font-bold">{{ season.seasonNumber ? 'Saison ' + season.seasonNumber : season.name }}</h1>
+            <div class="mt-6">{{ season.airDate ? 'Sorti le ' + formatDate(season.airDate) : '' }}</div>
           </div>
         </div>
       </div>

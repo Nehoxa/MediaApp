@@ -21,18 +21,12 @@ class PersonController extends Controller
             return Tmdb::showPerson($id);
         });
 
-        $statusMessage = null;
-        if (array_key_exists('status_message', $person)) {
-            $statusMessage = $person['status_message'];
-            return Inertia::render('Error/Error', compact('statusMessage'));
-        }
-
         $combinedCredit = Tmdb::creditsPerson($id);
 
         $allMedia = Cache::remember('allMedia' . $id, now()->addMinute(), function () use ($id) {
             return Tmdb::sortBioPerson($id);
         });
 
-        return Inertia::render('Person/ShowPerson', compact('person', 'allMedia', 'statusMessage'));
+        return Inertia::render('Person/ShowPerson', compact('person', 'allMedia'));
     }
 }

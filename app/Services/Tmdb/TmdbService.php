@@ -3,8 +3,27 @@
 namespace App\Services\Tmdb;
 
 use Inertia\Inertia;
+use App\Enums\Department;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use App\Services\Tmdb\Entities\Movie;
+use App\Services\Tmdb\Entities\Serie;
+use App\Services\Tmdb\Entities\Person;
+use App\Services\Tmdb\Entities\GenreList;
+use App\Services\Tmdb\Entities\MediaList;
+use App\Services\Tmdb\Entities\MovieList;
+use App\Services\Tmdb\Entities\SerieList;
+use App\Services\Tmdb\Entities\MediaCredit;
+use App\Services\Tmdb\Entities\MovieSearch;
+use App\Services\Tmdb\Entities\MultiSearch;
+use App\Services\Tmdb\Entities\SeasonSerie;
+use App\Services\Tmdb\Entities\SerieSearch;
+use App\Services\Tmdb\Entities\EpisodeSerie;
+use App\Services\Tmdb\Entities\PersonCredit;
+use App\Services\Tmdb\Entities\PersonSearch;
+use App\Services\Tmdb\Entities\RelatedMedia;
+use App\Services\Tmdb\Entities\EpisodeCredit;
+use App\Services\Tmdb\Entities\MovieCollection;
 
 class TmdbService
 {
@@ -24,113 +43,232 @@ class TmdbService
         return $response;
     }
 
-    public function checkResponse(array $response)
+    /**
+     * Display a list of mixed media matching with query
+     *
+     * @param string $query
+     * @param int $page
+     * @return object
+     */
+    public function multiSearch(string $query, int $page): Object
     {
-        $statusMessage = null;
-        if (array_key_exists('status_message', $response)) {
-            $statusMessage = $response['status_message'];
-            return Inertia::render('Error/Error', compact('statusMessage'));
-        }
+        return new MultiSearch($this->get('search/multi', ['query' => $query, 'page' => $page]));
     }
 
-    public function multiSearch(string $query, int $page): mixed
+    /**
+     * Display a list of movie matching with query
+     *
+     * @param string $query
+     * @param int $page
+     * @return object
+     */
+    public function movieSearch(string $query, int $page): Object
     {
-        return $this->get('search/multi', ['query' => $query, 'page' => $page])->json();
+        return new MovieSearch($this->get('search/movie', ['query' => $query, 'page' => $page]));
     }
 
-    public function movieSearch(string $query, int $page): mixed
+    /**
+     * Display a list of serie matching with query
+     *
+     * @param string $query
+     * @param int $page
+     * @return object
+     */
+    public function serieSearch(string $query, int $page): Object
     {
-        return $this->get('search/movie', ['query' => $query, 'page' => $page])->json();
+        return new SerieSearch($this->get('search/tv', ['query' => $query, 'page' => $page]));
     }
 
-    public function serieSearch(string $query, int $page): mixed
+    /**
+     * Display a list of person matching with query
+     *
+     * @param string $query
+     * @param int $page
+     * @return object
+     */
+    public function personSearch(string $query, int $page): Object
     {
-        return $this->get('search/tv', ['query' => $query, 'page' => $page])->json();
+        return new PersonSearch($this->get('search/person', ['query' => $query, 'page' => $page]));
     }
 
-    public function personSearch(string $query, int $page): mixed
+    /**
+     * Display a listing of movies and series.
+     *
+     * @return object
+     */
+    public function mediasList(): Object
     {
-        return $this->get('search/person', ['query' => $query, 'page' => $page])->json();
+        return new MediaList($this->get('trending/all/week'));
     }
 
-    public function mediasList(): mixed
+    /**
+     * Display a listing of movies.
+     *
+     * @return object
+     */
+    public function moviesList(): Object
     {
-        return $this->get('trending/all/week')->json();
+        return new MovieList($this->get('trending/movie/week'));
     }
 
-    public function moviesList(): mixed
+    /**
+     * Display a listing of series.
+     *
+     * @return object
+     */
+    public function seriesList(): Object
     {
-        return $this->get('trending/movie/week')->json();
+        return new SerieList($this->get('trending/tv/week'));
     }
 
-    public function seriesList(): mixed
+    /**
+     * Display a listing of genres.
+     *
+     * @return object
+     */
+    public function genresList(): Object
     {
-        return $this->get('trending/tv/week')->json();
+        return new GenreList($this->get('genre/movie/list'));
     }
 
-    public function genresList(): mixed
+    /**
+     * Display the specified Movie.
+     *
+     * @param integer $id
+     * @return object
+     */
+    public function showMovie(int $id): Object
     {
-        return $this->get('genre/movie/list')->json();
+        return new Movie($this->get('movie/' . $id));
     }
 
-    public function showMovie(int $paged): mixed
+    /**
+     * Display the specified Serie.
+     *
+     * @param integer $id
+     * @return object
+     */
+    public function showSerie(int $id): Object
     {
-        return $this->get('movie/' . $paged)->json();
+        // dd($this->get('tv/' . $id)->json());
+        return new Serie($this->get('tv/' . $id));
     }
 
-    public function showSerie(int $paged): mixed
+    /**
+     * Display the specified Person.
+     *
+     * @param integer $id
+     * @return object
+     */
+    public function showPerson(int $id): Object
     {
-        return $this->get('tv/' . $paged)->json();
+        return new Person($this->get('person/' . $id));
     }
 
-    public function showPerson(int $paged): mixed
+    /**
+     * Display the credits of specified Movie.
+     *
+     * @param integer $id
+     * @return object
+     */
+    public function movieCredit(int $id): Object
     {
-        return $this->get('person/' . $paged)->json();
+        return new MediaCredit($this->get('movie/' . $id . '/credits'));
     }
 
-    public function movieCredit(int $paged): mixed
+    /**
+     * Display the credits of specified Serie.
+     *
+     * @param integer $id
+     * @return object
+     */
+    public function serieCredit(int $id): Object
     {
-        return $this->get('movie/' . $paged . '/credits')->json();
+        return new MediaCredit($this->get('tv/' . $id . '/credits'));
     }
 
-    public function serieCredit(int $paged): mixed
+    /**
+     * Display the related movies of specified Movie.
+     *
+     * @param integer $id
+     * @return object
+     */
+    public function movieRelated(int $id): Object
     {
-        return $this->get('tv/' . $paged . '/credits')->json();
+        return new RelatedMedia($this->get('movie/' . $id . '/recommendations'));
     }
 
-    public function movieRelated(int $paged): mixed
+    /**
+     * Display the related series of specified Serie.
+     *
+     * @param integer $id
+     * @return object
+     */
+    public function serieRelated(int $id): Object
     {
-        return $this->get('movie/' . $paged . '/recommendations')->json();
+        return new RelatedMedia($this->get('tv/' . $id . '/recommendations'));
     }
 
-    public function serieRelated(int $paged): mixed
+    /**
+     * Display the collection of specified Movie.
+     *
+     * @param integer $id
+     * @return object
+     */
+    public function movieCollection(int $id): Object
     {
-        return $this->get('tv/' . $paged . '/recommendations')->json();
+        return new MovieCollection($this->get('collection/' . $id));
     }
 
-    public function movieCollection(int $paged): mixed
+    /**
+     * Display the specified season of serie.
+     *
+     * @param integer $id
+     * @param integer $season
+     * @return object
+     */
+    public function showSeason(int $id, int $season): Object
     {
-        return $this->get('collection/' . $paged)->json();
+        return new SeasonSerie($this->get('tv/' . $id . '/season/' . $season));
     }
 
-    public function showSeason(int $paged, int $season): mixed
+    /**
+     * Display the specified episode of serie.
+     *
+     * @param integer $id
+     * @param integer $season
+     * @param integer $episode
+     * @return object
+     */
+    public function showEpisode(int $id, int $season, int $episode): Object
     {
-        return $this->get('tv/' . $paged . '/season/' . $season)->json();
+        return new EpisodeSerie($this->get('tv/' . $id . '/season/' . $season . '/episode/' . $episode));
     }
 
-    public function showEpisode(int $paged, int $season, int $episode): mixed
+    /**
+     * Display the credit of specified episode of serie.
+     *
+     * @param integer $id
+     * @param integer $season
+     * @param integer $episode
+     * @return object
+     */
+    public function creditsEpisode(int $id, int $season, int $episode): mixed
     {
-        return $this->get('tv/' . $paged . '/season/' . $season . '/episode/' . $episode)->json();
+        return new EpisodeCredit($this->get('tv/' . $id . '/season/' . $season . '/episode/' . $episode . '/credits'));
     }
 
-    public function creditsEpisode(int $paged, int $season, int $episode): mixed
+    /**
+     * Display the credit of specified Person.
+     *
+     * @param integer $id
+     * @param integer $season
+     * @param integer $episode
+     * @return object
+     */
+    public function creditsPerson($id): mixed
     {
-        return $this->get('tv/' . $paged . '/season/' . $season . '/episode/' . $episode . '/credits')->json();
-    }
-
-    public function creditsPerson($paged): mixed
-    {
-        return $this->get('person/' . $paged . '/combined_credits')->json();
+        return new PersonCredit($this->get('person/' . $id . '/combined_credits'));
     }
 
     public function paginate($results, string $query, string $mediaType): array
@@ -139,13 +277,13 @@ class TmdbService
 
         $links['0']['active'] = false;
         $links['0']['label'] = '&laquo; Précédent';
-        $links['0']['url'] = 'http://filmapp.test/search/' . $mediaType . '?search=' . $query . '&page=' . $results['page'] - 1;
-        if($results['page'] - 1 === 0) {
+        $links['0']['url'] = 'http://filmapp.test/search/' . $mediaType . '?search=' . $query . '&page=' . ($results->page - 1);
+        if($results->page - 1 === 0) {
             $links['0']['url'] = null;
         }
-        if ($results['total_pages'] > 20) {
+        if ($results->totalPages > 20) {
             foreach(range(1, 3) as $page) {
-                if($page === $results['page']) {
+                if($page === $results->page) {
                     $links[$page]['active'] = true;
                 } else {
                     $links[$page]['active'] = false;
@@ -158,28 +296,28 @@ class TmdbService
             $links['4']['label'] = '...';
             $links['4']['url'] = null;
 
-            if ($results['page'] != 1) {
-                foreach(range($results['page'] - 1, $results['page'] + 1) as $page) {
-                    if($page === $results['page']) {
+            if ($results->page != 1) {
+                foreach(range($results->page - 1, $results->page + 1) as $page) {
+                    if($page === $results->page) {
                         $links[$page]['active'] = true;
                     } else {
                         $links[$page]['active'] = false;
                     }
                     $links[$page]['url'] = 'http://filmapp.test/search/' . $mediaType . '?search=' . $query . '&page=' . $page;
-                    if ($results['page'] - 1) {
+                    if ($results->page - 1) {
                     }
                     $links[$page]['label'] = $page;
                 }
             }
 
-            if ($results['page'] >= 3 && $results['page'] < $results['total_pages'] - 4) {
-                $links[$results['total_pages'] - 3]['active'] = false;
-                $links[$results['total_pages'] - 3]['label'] = '...';
-                $links[$results['total_pages'] - 3]['url'] = null;
+            if ($results->page >= 3 && $results->page < $results->totalPages - 4) {
+                $links[$results->totalPages - 3]['active'] = false;
+                $links[$results->totalPages - 3]['label'] = '...';
+                $links[$results->totalPages - 3]['url'] = null;
             }
 
-            foreach(range($results['total_pages'] - 2, $results['total_pages']) as $page) {
-                if($page === $results['page']) {
+            foreach(range($results->totalPages - 2, $results->totalPages) as $page) {
+                if($page === $results->page) {
                     $links[$page]['active'] = true;
                 } else {
                     $links[$page]['active'] = false;
@@ -189,8 +327,8 @@ class TmdbService
             }
 
         } else {
-            foreach(range(1, $results['total_pages']) as $page) {
-                if($page === $results['page']) {
+            foreach(range(1, $results->totalPages) as $page) {
+                if($page === $results->page) {
                     $links[$page]['active'] = true;
                 } else {
                     $links[$page]['active'] = false;
@@ -199,11 +337,11 @@ class TmdbService
                 $links[$page]['label'] = $page;
             }
         }
-        $links[$results['total_pages'] + 1]['active'] = false;
-        $links[$results['total_pages'] + 1]['label'] = 'Suivant &raquo;';
-        $links[$results['total_pages'] + 1]['url'] = 'http://filmapp.test/search/' . $mediaType . '?search=' . $query . '&page=' . $results['page'] + 1;
-        if($results['page'] + 1 > $results['total_pages']) {
-            $links[$results['total_pages'] + 1]['url'] = null;
+        $links[$results->totalPages + 1]['active'] = false;
+        $links[$results->totalPages + 1]['label'] = 'Suivant &raquo;';
+        $links[$results->totalPages + 1]['url'] = 'http://filmapp.test/search/' . $mediaType . '?search=' . $query . '&page=' . ($results->page + 1);
+        if($results->page + 1 > $results->totalPages) {
+            $links[$results->totalPages + 1]['url'] = null;
         }
 
         return $links;
@@ -220,52 +358,47 @@ class TmdbService
         return $array;
     }
 
-    public function sortBioPerson($paged): array
+    public function sortBioPerson($id): array
     {
-        $combinedCredit = $this->creditsPerson($paged);
+        $combinedCredit = $this->creditsPerson($id);
 
         $cast = [];
         $directing = [];
         $production = [];
         $writing = [];
         $creator = [];
+        $crew = [];
+        $otherProjects = [];
 
-        $cast = $combinedCredit['cast'];
+        $cast = $combinedCredit->cast;
 
-        $popularMedia = array_merge($combinedCredit['cast'], $combinedCredit['crew']);
+        $popularMedia = array_merge($combinedCredit->cast, $combinedCredit->crew);
 
-        foreach ($combinedCredit['crew'] as $pagetem) {
-            if (isset($pagetem['department'])) {
-                if ($pagetem['department'] === 'Directing') {
-                    $directing[] = $pagetem;
-                }
-                if ($pagetem['department'] === 'Production') {
-                    $production[] = $pagetem;
-                }
-                if ($pagetem['department'] === 'Writing') {
-                    $writing[] = $pagetem;
-                }
-                if ($pagetem['department'] === 'Creator') {
-                    $creator[] = $pagetem;
-                }
+        foreach ($combinedCredit->crew as $project) {
+            if (isset($project['department'])) {
+                match($project['department']) {
+                    Department::Directing->value => $directing[] = $project,
+                    Department::Production->value => $production[] = $project,
+                    Department::Writing->value => $writing[] = $project,
+                    Department::Creator->value => $creator[] = $project,
+                    Department::Crew->value => $crew[] = $project,
+                    default => $otherProjects[] = $project,
+                };
             }
         }
-
-        $cast = $this->sort($cast);
-        $directing = $this->sort($directing);
-        $production = $this->sort($production);
-        $writing = $this->sort($writing);
-        $creator = $this->sort($creator);
 
         usort($popularMedia, function ($firstMedia, $secondMedia) {
             return $secondMedia['vote_count'] - $firstMedia['vote_count'];
         });
 
-        $allMedia['cast'] = $cast;
-        $allMedia['directing'] = $directing;
-        $allMedia['production'] = $production;
-        $allMedia['writing'] = $writing;
-        $allMedia['creator'] = $creator;
+        $allMedia['cast'] = $this->sort($cast);
+        $allMedia['directing'] = $this->sort($directing);
+        $allMedia['production'] = $this->sort($production);
+        $allMedia['writing'] = $this->sort($writing);
+        $allMedia['creator'] = $this->sort($creator);
+        $allMedia['crew'] = $this->sort($crew);
+        $allMedia['otherProjects'] = $this->sort($otherProjects);
+
         $allMedia['popularMedia'] = array_slice($popularMedia, 0, 20);
 
         return $allMedia;

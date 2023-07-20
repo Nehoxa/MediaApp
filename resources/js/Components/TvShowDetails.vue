@@ -3,12 +3,12 @@
   <div className="serie">
     <div className="serie__intro">
       <div className="fade"></div>
-      <img className="serie__backdrop" :src="'https://image.tmdb.org/t/p/original' + serie.backdrop_path" />
+      <img className="serie__backdrop" :src="'https://image.tmdb.org/t/p/original' + serie.backdropPath" />
     </div>
     <div className="serie__detail">
       <div className="serie__detailLeft">
         <div className="serie__posterBox">
-          <img className="serie__poster" :src="'https://image.tmdb.org/t/p/w400' + serie.poster_path" />
+          <img className="serie__poster" :src="'https://image.tmdb.org/t/p/w400' + serie.posterPath" />
         </div>
       </div>
       <div className="serie__detailRight">
@@ -23,24 +23,24 @@
           </div>
           <div className="serie__tagline">{{ serie.tagline ? serie.tagline : '' }}</div>
           <div className="serie__rating">
-            <span className="serie__note">{{ parseFloat(serie.vote_average.toFixed(1)) }}</span>
+            <span className="serie__note">{{ parseFloat(serie.voteAverage.toFixed(1)) }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
               <path fill-rule="evenodd"
                 d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
                 clip-rule="evenodd" />
             </svg>
-            <span className="serie__voteCount">{{ serie.vote_count ? "- (" + serie.vote_count + ") votes" : "" }}</span>
+            <span className="serie__voteCount">{{ serie.voteCount ? "- (" + serie.voteCount + ") votes" : "" }}</span>
           </div>
           <div className="serie__date">
-            <div>{{ formatDate(serie.first_air_date) + ' - ' + formatDate(serie.last_air_date) }}</div>
-            <div v-for="vo in serie.spoken_languages">Version Original : {{ vo.english_name }}</div>
+            <div>{{ formatDate(serie.firstAirDate) + ' - ' + formatDate(serie.lastAirDate) }}</div>
+            <div v-for="vo in serie.spokenLanguages">Version Original : {{ vo.englishName }}</div>
           </div>
           <div>
-            <span className="serie__season">{{ serie.episode_run_time ? formattedSeason(serie.number_of_seasons) : ""
+            <span className="serie__season">{{ serie.episodeRunTime ? formattedSeason(serie.numberOfSeasons) : ""
             }}</span>
-            <span className="serie__eps">{{ serie.episode_run_time ? formattedEpisode(serie.number_of_episodes) : ""
+            <span className="serie__eps">{{ serie.episodeRunTime ? formattedEpisode(serie.numberOfEpisodes) : ""
             }}</span>
-            <span className="serie__runtime">{{ serie.episode_run_time.length >= 1 ? formatRuntime(serie.episode_run_time)
+            <span className="serie__runtime">{{ serie.episodeRunTime.length >= 1 ? formatRuntime(serie.episodeRunTime)
               : ""
             }}</span>
           </div>
@@ -49,7 +49,7 @@
               <span className="serie__genre" v-for="genre in serie.genres" :key="genre.id">{{ genre.name }}</span>
             </div>
             <div className="serie__createdByContainer">
-              <div className="serie__createdBy" v-for="creator in serie.created_by" :key="creator.id">
+              <div className="serie__createdBy" v-for="creator in serie.createdBy" :key="creator.id">
                 <Link :href="route('person.show', creator.id)">{{ creator.name }}</Link>
                 <div className="serie__creatorRole">Créatrice / Créateur</div>
               </div>
