@@ -11,7 +11,7 @@
         <div class="w-full flex justify-center">
           <Pagination class="m-2 p-2 flex justify-center" :links="links" v-if="results.total_pages != 1" />
         </div>
-        <Link :href="getLink(result.media_type, result.id)" v-for="result in results.results" :key="result.id"
+        <Link :href="route('serie.show', result.id)" v-for="result in results.results" :key="result.id"
           class="mb-8 flex hover:bg-gradient-to-b from-gray-950 to-gray-700 cursor-pointer w-full rounded-xl">
         <img class="h-40 shadow-lg max-w-none rounded-l-xl" :src="getPoster(result.poster_path)" alt="">
         <div class="ml-4">
@@ -60,16 +60,6 @@ function getPoster(img) {
     return 'https://image.tmdb.org/t/p/w200' + img
   }
   return 'https://fr.web.img3.acsta.net/c_200_300/commons/v9/common/empty/empty_portrait.png'
-}
-
-function getLink(mediaType, id) {
-  if (mediaType === 'movie') {
-    return route('movie.show', id)
-  } else if (mediaType === 'tv') {
-    return route('serie.show', id)
-  } else {
-    return route('person.show', id)
-  }
 }
 
 function formatedOverview(overview, maxCharacters) {

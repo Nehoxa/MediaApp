@@ -2,27 +2,29 @@
 
 namespace App\Services\Tmdb\Entities;
 
+use Illuminate\Http\Client\Response;
+
 class Movie
 {
     public bool $adult;
-    public string $backdropPath;
-    public ?array $belongsToCollection;
+    public ?string $backdropPath;
+    public ?array $belongsToCollection; /** @phpstan-ignore-line */
     public int $budget;
-    public array $genres;
+    public array $genres; /** @phpstan-ignore-line */
     public string $homepage;
     public int $id;
-    public string $imdbId;
+    public ?string $imdbId;
     public string $originalLanguage;
     public string $originalTitle;
     public string $overview;
     public float $popularity;
-    public string $posterPath;
-    public array $productionCompanies;
-    public array $productionCountries;
+    public ?string $posterPath;
+    public array $productionCompanies; /** @phpstan-ignore-line */
+    public array $productionCountries; /** @phpstan-ignore-line */
     public string $releaseDate;
     public int $revenue;
     public int $runtime;
-    public array $spokenLanguages;
+    public array $spokenLanguages; /** @phpstan-ignore-line */
     public string $status;
     public string $tagline;
     public string $title;
@@ -32,19 +34,19 @@ class Movie
     public int $statusCode;
     public string $statusMessage;
 
-    public function __construct($data)
+    public function __construct(Response $data)
     {
-        $collection = collect($data->json());
+        $collection = collect((array) $data->json());
 
-        if ($data->getStatusCode() === 200) {
+        if ($data->status() === 200) {
             foreach ($collection as $key => $value) {
-                $CamelCaseKey = lcfirst(str_replace('_', '', ucwords($key, '_')));          
-                $this->$CamelCaseKey = $collection->get($key);
+                $camelCaseKey = str($key)->camel();
+                $this->$camelCaseKey = $collection->get($key);
             }
-            $this->statusCode = $data->getStatusCode();
-            $this->statusMessage = $data->getReasonPhrase();
+            $this->statusCode = $data->status();
+            $this->statusMessage = $data->reason();
         } else {
-            $this->statusCode = $data->getStatusCode();
+            $this->statusCode = $data->status();
             $this->statusMessage = $collection->get('status_message');
         }
     }

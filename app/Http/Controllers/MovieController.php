@@ -18,9 +18,7 @@ class MovieController extends Controller
     {
         $medias = Tmdb::mediasList();
 
-        $genres = Cache::remember('genres', now()->addMinute(), function () {
-            return Tmdb::genresList();
-        });
+        $genres = Cache::remember('genres', now()->addMinute(), fn () => Tmdb::genresList());
 
         return Inertia::render('HomePage', compact('medias', 'genres'));
     }
@@ -32,13 +30,9 @@ class MovieController extends Controller
      */
     public function index(): Response
     {
-        $movies = Cache::remember('movies', now()->addMinute(), function () {
-            return Tmdb::moviesList();
-        });
+        $movies = Cache::remember('movies', now()->addMinute(), fn () => Tmdb::moviesList());
 
-        $genres = Cache::remember('genres', now()->addMinute(), function () {
-            return Tmdb::genresList();
-        });
+        $genres = Cache::remember('genres', now()->addMinute(), fn () => Tmdb::genresList());
 
         return Inertia::render('Movie/MovieHomePage', compact('movies', 'genres'));
     }
@@ -51,18 +45,12 @@ class MovieController extends Controller
      */
     public function show(int $id): Response
     {
-        $movie = Cache::remember('movie' . $id, now()->addSeconds(2), function () use ($id) {
-            return Tmdb::showMovie($id);
-        });
+        $movie = Cache::remember('movie' . $id, now()->addSeconds(2), fn () => Tmdb::showMovie($id));
 
-        $credits = Cache::remember('credit' . $id, now()->addMinute(), function () use ($id) {
-            return Tmdb::movieCredit($id);
-        });
+        $credits = Cache::remember('credit' . $id, now()->addMinute(), fn () => Tmdb::movieCredit($id));
 
-        $relatedMovies = Cache::remember('relatedMovies' . $id, now()->addMinute(), function () use ($id) {
-            return Tmdb::movieRelated($id);
-        });
-        
+        $relatedMovies = Cache::remember('relatedMovies' . $id, now()->addMinute(), fn () => Tmdb::movieRelated($id));
+
         return Inertia::render('Movie/Show', compact('movie', 'credits', 'relatedMovies'));
     }
 
@@ -74,28 +62,7 @@ class MovieController extends Controller
      */
     public function showCollection(int $id): Response
     {
-        $collection = Cache::remember('collection' . $id, now()->addMinute(), function () use ($id) {
-            $collection = Tmdb::movieCollection($id);
-
-            $movies = $collection->parts;
-
-            unset($collection->parts);
-
-            usort($movies, function ($a, $b) {
-                $dateA = ($a['release_date'] !== '') ? $a['release_date'] : '9999-99-99';
-                $dateB = ($b['release_date'] !== '') ? $b['release_date'] : '9999-99-99';
-
-                if ($dateA == $dateB) {
-                    return 0;
-                }
-
-                return ($dateA < $dateB) ? -1 : 1;
-            });
-
-            $collection->parts = $movies;
-
-            return $collection;
-        });
+        $collection = Cache::remember('collection' . $id, now()->addSeconds(2), fn () => Tmdb::movieCollection($id));
 
         return Inertia::render('Movie/Collection', compact('collection'));
     }

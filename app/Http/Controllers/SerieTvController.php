@@ -18,9 +18,7 @@ class SerieTvController extends Controller
     {
         $series = Tmdb::seriesList();
 
-        $genres = Cache::remember('genres', now()->addMinute(), function () {
-            return Tmdb::genresList();
-        });
+        $genres = Cache::remember('genres', now()->addMinute(), fn () => Tmdb::genresList());
 
         return Inertia::render('SerieTv/SeriesHomePage', compact('series', 'genres'));
     }
@@ -33,16 +31,11 @@ class SerieTvController extends Controller
      */
     public function show(int $id): Response
     {
-        $serie = Cache::remember('serie' . $id, now()->addMinute(), function () use ($id) {
-            return Tmdb::showSerie($id);
-        });
+        $serie = Cache::remember('serie' . $id, now()->addMinute(), fn () => Tmdb::showSerie($id));
 
-        $credits = Cache::remember('credits' . $id, now()->addMinute(), function () use ($id) {
-            return Tmdb::serieCredit($id);
-        });
-        $recommendations = Cache::remember('recommendations' . $id, now()->addMinute(), function () use ($id) {
-            return Tmdb::serieRelated($id);
-        });
+        $credits = Cache::remember('credits' . $id, now()->addMinute(), fn () => Tmdb::serieCredit($id));
+
+        $recommendations = Cache::remember('recommendations' . $id, now()->addMinute(), fn () => Tmdb::serieRelated($id));
 
         return Inertia::render('SerieTv/Show', compact('serie', 'credits', 'recommendations'));
     }
@@ -56,9 +49,7 @@ class SerieTvController extends Controller
      */
     public function showSeason(int $id, int $season): Response
     {
-        $season = Cache::remember('serie' . $id . 'season' . $season, now()->addMinute(), function () use ($id, $season) {
-            return Tmdb::showSeason($id, $season);
-        });
+        $season = Cache::remember('serie' . $id . 'season' . $season, now()->addMinute(), fn () => Tmdb::showSeason($id, $season));
 
         return Inertia::render('SerieTv/ShowSeason', compact('season', ));
     }
@@ -73,13 +64,9 @@ class SerieTvController extends Controller
      */
     public function showEpisode(int $id, int $season, int $nbEpisode)
     {
-        $episode = Cache::remember('serie' . $id . 'season' . $season . 'epsiode' . $nbEpisode, now()->addMinute(), function () use ($id, $season, $nbEpisode) {
-            return Tmdb::showEpisode($id, $season, $nbEpisode);
-        });
+        $episode = Cache::remember('serie' . $id . 'season' . $season . 'epsiode' . $nbEpisode, now()->addMinute(), fn () => Tmdb::showEpisode($id, $season, $nbEpisode));
 
-        $credits = Cache::remember('credits' . $id . 'season' . $season . 'epsiode' . $nbEpisode, now()->addMinute(), function () use ($id, $season, $nbEpisode) {
-            return Tmdb::creditsEpisode($id, $season, $nbEpisode);
-        });
+        $credits = Cache::remember('credits' . $id . 'season' . $season . 'epsiode' . $nbEpisode, now()->addMinute(), fn () => Tmdb::creditsEpisode($id, $season, $nbEpisode));
 
         return Inertia::render('SerieTv/ShowEpisode', compact('episode', 'credits'));
     }

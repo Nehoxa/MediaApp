@@ -17,15 +17,11 @@ class PersonController extends Controller
      */
     public function show(int $id): Response
     {
-        $person = Cache::remember('show' . $id, now()->addMinute(), function () use ($id) {
-            return Tmdb::showPerson($id);
-        });
+        $person = Cache::remember('show' . $id, now()->addMinute(), fn () => Tmdb::showPerson($id));
 
         $combinedCredit = Tmdb::creditsPerson($id);
 
-        $allMedia = Cache::remember('allMedia' . $id, now()->addMinute(), function () use ($id) {
-            return Tmdb::sortBioPerson($id);
-        });
+        $allMedia = Cache::remember('allMedia' . $id, now()->addMinute(), fn () => Tmdb::sortBioPerson($id));
 
         return Inertia::render('Person/ShowPerson', compact('person', 'allMedia'));
     }

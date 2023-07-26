@@ -9,7 +9,6 @@ use Inertia\Response;
 
 class SearchController extends Controller
 {
-
     /**
      * Display a list of mixed media matching with query
      *
@@ -19,13 +18,8 @@ class SearchController extends Controller
     public function search(Request $request): Response
     {
         $query = $request->search;
-        $page = $request->page;
 
-        if ($page === null) {
-            $page = 1;
-        }
-
-        $results = Tmdb::multiSearch($query, $page);
+        $results = Tmdb::multiSearch($query, $request->page);
 
         $data['search'] = $query;
         $data['page'] = 1;
@@ -44,13 +38,9 @@ class SearchController extends Controller
     public function searchMovie(Request $request): Response
     {
         $query = $request->search;
-        $page = $request->page;
 
-        if ($page === null) {
-            $page = 1;
-        }
+        $results = Tmdb::movieSearch($query, $request->page);
 
-        $results = Tmdb::movieSearch($query, $page);
 
         $data['search'] = $query;
         $data['page'] = 1;
@@ -69,9 +59,8 @@ class SearchController extends Controller
     public function searchSerie(Request $request): Response
     {
         $query = $request->search;
-        $page = $request->page;
 
-        $results = Tmdb::serieSearch($query, $page);
+        $results = Tmdb::serieSearch($query, $request->page);
 
         $data['search'] = $query;
         $data['page'] = 1;
@@ -90,9 +79,8 @@ class SearchController extends Controller
     public function searchPerson(Request $request): Response
     {
         $query = $request->search;
-        $page = $request->page;
 
-        $results = Tmdb::personSearch($query, $page);
+        $results = Tmdb::personSearch($query, $request->page);
 
         $data['search'] = $query;
         $data['page'] = 1;

@@ -2,38 +2,40 @@
 
 namespace App\Services\Tmdb\Entities;
 
+use Illuminate\Http\Client\Response;
+
 class Person
 {
     public bool $adult;
-    public array $alsoKnownAs;
+    public array $alsoKnownAs; /** @phpstan-ignore-line */
     public string $biography;
-    public string $birthday;
+    public ?string $birthday;
     public ?string $deathday;
     public int $gender;
     public ?string $homepage;
     public int $id;
-    public string $imdbId;
-    public string $knownForDepartment;
+    public ?string $imdbId;
+    public ?string $knownForDepartment;
     public string $name;
-    public string $placeOfBirth;
+    public ?string $placeOfBirth;
     public float $popularity;
     public ?string $profilePath;
     public int $statusCode;
     public string $statusMessage;
 
-    public function __construct($data)
+    public function __construct(Response $data)
     {
-        $collection = collect($data->json());
+        $collection = collect((array) $data->json());
 
-        if ($data->getStatusCode() === 200) {
+        if ($data->status() === 200) {
             foreach ($collection as $key => $value) {
-                $CamelCaseKey = lcfirst(str_replace('_', '', ucwords($key, '_')));
-                $this->$CamelCaseKey = $collection->get($key);
+                $camelCaseKey = str($key)->camel();
+                $this->$camelCaseKey = $collection->get($key);
             }
-            $this->statusCode = $data->getStatusCode();
-            $this->statusMessage = $data->getReasonPhrase();
+            $this->statusCode = $data->status();
+            $this->statusMessage = $data->reason();
         } else {
-            $this->statusCode = $data->getStatusCode();
+            $this->statusCode = $data->status();
             $this->statusMessage = $collection->get('status_message');
         }
     }

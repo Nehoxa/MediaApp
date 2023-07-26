@@ -2,7 +2,6 @@
 
 namespace App\Services\Tmdb;
 
-use Inertia\Inertia;
 use App\Enums\Department;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -23,14 +22,24 @@ use App\Services\Tmdb\Entities\PersonCredit;
 use App\Services\Tmdb\Entities\PersonSearch;
 use App\Services\Tmdb\Entities\RelatedMedia;
 use App\Services\Tmdb\Entities\EpisodeCredit;
+use App\Services\Tmdb\Entities\SearchEntities;
 use App\Services\Tmdb\Entities\MovieCollection;
 
 class TmdbService
 {
+    /**
+     * @param array<string, string> $config
+     */
     public function __construct(protected array $config)
     {
     }
 
+    /**
+     *
+     * @param string $uri
+     * @param array<string, string|int|null> $params
+     * @return Response
+     */
     protected function get(string $uri, array $params = []): Response
     {
         $params = array_merge($params, [
@@ -48,11 +57,11 @@ class TmdbService
      *
      * @param string $query
      * @param int $page
-     * @return object
+     * @return SearchEntities
      */
-    public function multiSearch(string $query, int $page): Object
+    public function multiSearch(string $query, ?int $page = 1): SearchEntities
     {
-        return new MultiSearch($this->get('search/multi', ['query' => $query, 'page' => $page]));
+        return new SearchEntities($this->get('search/multi', ['query' => $query, 'page' => $page]), $query);
     }
 
     /**
@@ -60,11 +69,11 @@ class TmdbService
      *
      * @param string $query
      * @param int $page
-     * @return object
+     * @return SearchEntities
      */
-    public function movieSearch(string $query, int $page): Object
+    public function movieSearch(string $query, ?int $page = 1): SearchEntities
     {
-        return new MovieSearch($this->get('search/movie', ['query' => $query, 'page' => $page]));
+        return new SearchEntities($this->get('search/movie', ['query' => $query, 'page' => $page]), $query);
     }
 
     /**
@@ -72,11 +81,11 @@ class TmdbService
      *
      * @param string $query
      * @param int $page
-     * @return object
+     * @return SearchEntities
      */
-    public function serieSearch(string $query, int $page): Object
+    public function serieSearch(string $query, ?int $page = 1): SearchEntities
     {
-        return new SerieSearch($this->get('search/tv', ['query' => $query, 'page' => $page]));
+        return new SearchEntities($this->get('search/tv', ['query' => $query, 'page' => $page]), $query);
     }
 
     /**
@@ -84,19 +93,19 @@ class TmdbService
      *
      * @param string $query
      * @param int $page
-     * @return object
+     * @return SearchEntities
      */
-    public function personSearch(string $query, int $page): Object
+    public function personSearch(string $query, ?int $page = 1): SearchEntities
     {
-        return new PersonSearch($this->get('search/person', ['query' => $query, 'page' => $page]));
+        return new SearchEntities($this->get('search/person', ['query' => $query, 'page' => $page]), $query);
     }
 
     /**
      * Display a listing of movies and series.
      *
-     * @return object
+     * @return MediaList
      */
-    public function mediasList(): Object
+    public function mediasList(): MediaList
     {
         return new MediaList($this->get('trending/all/week'));
     }
@@ -104,9 +113,9 @@ class TmdbService
     /**
      * Display a listing of movies.
      *
-     * @return object
+     * @return MovieList
      */
-    public function moviesList(): Object
+    public function moviesList(): MovieList
     {
         return new MovieList($this->get('trending/movie/week'));
     }
@@ -114,9 +123,9 @@ class TmdbService
     /**
      * Display a listing of series.
      *
-     * @return object
+     * @return SerieList
      */
-    public function seriesList(): Object
+    public function seriesList(): SerieList
     {
         return new SerieList($this->get('trending/tv/week'));
     }
@@ -124,9 +133,9 @@ class TmdbService
     /**
      * Display a listing of genres.
      *
-     * @return object
+     * @return GenreList
      */
-    public function genresList(): Object
+    public function genresList(): GenreList
     {
         return new GenreList($this->get('genre/movie/list'));
     }
@@ -135,9 +144,9 @@ class TmdbService
      * Display the specified Movie.
      *
      * @param integer $id
-     * @return object
+     * @return Movie
      */
-    public function showMovie(int $id): Object
+    public function showMovie(int $id): Movie
     {
         return new Movie($this->get('movie/' . $id));
     }
@@ -146,11 +155,10 @@ class TmdbService
      * Display the specified Serie.
      *
      * @param integer $id
-     * @return object
+     * @return Serie
      */
-    public function showSerie(int $id): Object
+    public function showSerie(int $id): Serie
     {
-        // dd($this->get('tv/' . $id)->json());
         return new Serie($this->get('tv/' . $id));
     }
 
@@ -158,9 +166,9 @@ class TmdbService
      * Display the specified Person.
      *
      * @param integer $id
-     * @return object
+     * @return Person
      */
-    public function showPerson(int $id): Object
+    public function showPerson(int $id): Person
     {
         return new Person($this->get('person/' . $id));
     }
@@ -169,9 +177,9 @@ class TmdbService
      * Display the credits of specified Movie.
      *
      * @param integer $id
-     * @return object
+     * @return MediaCredit
      */
-    public function movieCredit(int $id): Object
+    public function movieCredit(int $id): MediaCredit
     {
         return new MediaCredit($this->get('movie/' . $id . '/credits'));
     }
@@ -180,9 +188,9 @@ class TmdbService
      * Display the credits of specified Serie.
      *
      * @param integer $id
-     * @return object
+     * @return MediaCredit
      */
-    public function serieCredit(int $id): Object
+    public function serieCredit(int $id): MediaCredit
     {
         return new MediaCredit($this->get('tv/' . $id . '/credits'));
     }
@@ -191,9 +199,9 @@ class TmdbService
      * Display the related movies of specified Movie.
      *
      * @param integer $id
-     * @return object
+     * @return RelatedMedia
      */
-    public function movieRelated(int $id): Object
+    public function movieRelated(int $id): RelatedMedia
     {
         return new RelatedMedia($this->get('movie/' . $id . '/recommendations'));
     }
@@ -202,9 +210,9 @@ class TmdbService
      * Display the related series of specified Serie.
      *
      * @param integer $id
-     * @return object
+     * @return RelatedMedia
      */
-    public function serieRelated(int $id): Object
+    public function serieRelated(int $id): RelatedMedia
     {
         return new RelatedMedia($this->get('tv/' . $id . '/recommendations'));
     }
@@ -213,9 +221,9 @@ class TmdbService
      * Display the collection of specified Movie.
      *
      * @param integer $id
-     * @return object
+     * @return MovieCollection
      */
-    public function movieCollection(int $id): Object
+    public function movieCollection(int $id): MovieCollection
     {
         return new MovieCollection($this->get('collection/' . $id));
     }
@@ -225,9 +233,9 @@ class TmdbService
      *
      * @param integer $id
      * @param integer $season
-     * @return object
+     * @return SeasonSerie
      */
-    public function showSeason(int $id, int $season): Object
+    public function showSeason(int $id, int $season): SeasonSerie
     {
         return new SeasonSerie($this->get('tv/' . $id . '/season/' . $season));
     }
@@ -238,9 +246,9 @@ class TmdbService
      * @param integer $id
      * @param integer $season
      * @param integer $episode
-     * @return object
+     * @return EpisodeSerie
      */
-    public function showEpisode(int $id, int $season, int $episode): Object
+    public function showEpisode(int $id, int $season, int $episode): EpisodeSerie
     {
         return new EpisodeSerie($this->get('tv/' . $id . '/season/' . $season . '/episode/' . $episode));
     }
@@ -251,9 +259,9 @@ class TmdbService
      * @param integer $id
      * @param integer $season
      * @param integer $episode
-     * @return object
+     * @return EpisodeCredit
      */
-    public function creditsEpisode(int $id, int $season, int $episode): mixed
+    public function creditsEpisode(int $id, int $season, int $episode): EpisodeCredit
     {
         return new EpisodeCredit($this->get('tv/' . $id . '/season/' . $season . '/episode/' . $episode . '/credits'));
     }
@@ -262,16 +270,22 @@ class TmdbService
      * Display the credit of specified Person.
      *
      * @param integer $id
-     * @param integer $season
-     * @param integer $episode
-     * @return object
+     * @return PersonCredit
      */
-    public function creditsPerson($id): mixed
+    public function creditsPerson($id): PersonCredit
     {
         return new PersonCredit($this->get('person/' . $id . '/combined_credits'));
     }
 
-    public function paginate($results, string $query, string $mediaType): array
+    /**
+     * Display the credit of specified Person.
+     *
+     * @param SearchEntities $results
+     * @param string $query
+     * @param string $mediaType
+     * @return array<array<string, bool|string|null>>
+     */
+    public function paginate(SearchEntities $results, string $query, string $mediaType): array
     {
         $links = [];
 
@@ -347,17 +361,33 @@ class TmdbService
         return $links;
     }
 
-    public function sort(array $array): array
-    {
-        usort($array, function ($firstDate, $secondDate) {
-            $firstDate = isset($firstDate['release_date']) ? $firstDate['release_date'] : $firstDate['first_air_date'];
-            $secondDate = isset($secondDate['release_date']) ? $secondDate['release_date'] : $secondDate['first_air_date'];
+    /**
+ * Sort an array
+ *
+ * @param array<int, array<string, bool|string|int|float|array<int, int>>> $array
+ * @return array<int, array<string, bool|string|int|float|array<int, int>>>
+ */
+public function sort(array $array): array
+{
+    usort($array, function ($firstItem, $secondItem) {
+        $firstDate = isset($firstItem['release_date']) ? $firstItem['release_date'] : $firstItem['first_air_date'];
+        $secondDate = isset($secondItem['release_date']) ? $secondItem['release_date'] : $secondItem['first_air_date'];
+
+        if (is_string($firstDate) && is_string($secondDate)) {
             return strcmp($secondDate, $firstDate);
-        });
+        }
+        return is_string($firstDate) ? -1 : (is_string($secondDate) ? 1 : 0);
+    });
 
-        return $array;
-    }
+    return $array;
+}
 
+    /**
+     * Sort biography of specified Person
+     *
+     * @param int $id
+     * @return array<string, array<int, array<string, bool|string|int>>>
+     */
     public function sortBioPerson($id): array
     {
         $combinedCredit = $this->creditsPerson($id);

@@ -4,14 +4,14 @@
       <div className="fade"></div>
       <div className="details">
         <div className="image_content">
-          <img className="image" :src="'https://image.tmdb.org/t/p/w200' + person.profilePath" alt="">
+          <img className="image" :src="person.profilePath ? 'https://image.tmdb.org/t/p/w200' + person.profilePath : ''" alt="">
         </div>
         <div className="name">{{ person.name }}</div>
         <div className="department">Métier : {{ person.knownForDepartment }}</div>
         <div className="birthday">Naissance : {{ formatDate(person.birthday) }}</div>
         <div className="birthday">Lieu de naissance : {{ person.placeOfBirth }}</div>
         <div className="birthday">{{ 'Âge : ' + getOld(person.birthday, person.deathday) + ' ans' }}</div>
-        <div className="birthday"> {{ person.deathday ? 'Décès :' + formatDate(person.deathday) : '' }}</div>
+        <div className="birthday"> {{ person.deathday ? 'Décès : ' + formatDate(person.deathday) : '' }}</div>
         <div className="biography" v-if="person.biography">
           <span className="biographyTitle">Biographie :</span>
           {{ person.biography }}
