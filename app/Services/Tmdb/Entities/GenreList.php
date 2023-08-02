@@ -6,7 +6,6 @@ use Illuminate\Http\Client\Response;
 
 class GenreList
 {
-    public array $genres; /** @phpstan-ignore-line */
     public int $statusCode;
     public string $statusMessage;
 

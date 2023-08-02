@@ -6,20 +6,6 @@ use Illuminate\Http\Client\Response;
 
 class Person
 {
-    public bool $adult;
-    public array $alsoKnownAs; /** @phpstan-ignore-line */
-    public string $biography;
-    public ?string $birthday;
-    public ?string $deathday;
-    public int $gender;
-    public ?string $homepage;
-    public int $id;
-    public ?string $imdbId;
-    public ?string $knownForDepartment;
-    public string $name;
-    public ?string $placeOfBirth;
-    public float $popularity;
-    public ?string $profilePath;
     public int $statusCode;
     public string $statusMessage;
 

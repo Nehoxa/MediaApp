@@ -6,12 +6,6 @@ use Illuminate\Http\Client\Response;
 
 class MovieCollection
 {
-    public int $id;
-    public string $name;
-    public string $overview;
-    public string $posterPath;
-    public ?string $backdropPath;
-    public array $parts; /** @phpstan-ignore-line */
     public int $statusCode;
     public string $statusMessage;
 
@@ -33,15 +27,15 @@ class MovieCollection
 
         $movies = $this->parts;
         
-        usort($movies, function ($a, $b) {
-            $dateA = ($a['release_date'] !== '') ? $a['release_date'] : '9999-99-99';
-            $dateB = ($b['release_date'] !== '') ? $b['release_date'] : '9999-99-99';
+        usort($movies, function ($firstDate, $secondDate) {
+            $firstDate = ($firstDate['release_date'] !== '') ? $firstDate['release_date'] : '9999-99-99';
+            $secondDate = ($secondDate['release_date'] !== '') ? $secondDate['release_date'] : '9999-99-99';
             
-            if ($dateA == $dateB) {
+            if ($firstDate == $secondDate) {
                 return 0;
             }
             
-            return ($dateA < $dateB) ? -1 : 1;
+            return ($firstDate < $secondDate) ? -1 : 1;
         });
         
         $this->parts = $movies;

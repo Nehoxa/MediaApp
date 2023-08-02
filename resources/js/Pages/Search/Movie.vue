@@ -49,8 +49,6 @@ const props = defineProps({
   data: Object
 });
 
-console.log(props.results);
-
 function formatDate(date) {
   const dateObj = new Date(date);
   const options = { day: 'numeric', month: 'long', year: 'numeric' };

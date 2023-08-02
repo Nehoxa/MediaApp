@@ -6,11 +6,6 @@ use Illuminate\Http\Client\Response;
 
 class SearchEntities
 {
-    public int $page;
-    public array $results; /** @phpstan-ignore-line */
-    public string $query;
-    public int $totalPages;
-    public int $totalResults;
     public int $statusCode;
     public string $statusMessage;
 

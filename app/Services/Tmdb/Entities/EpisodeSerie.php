@@ -6,19 +6,6 @@ use Illuminate\Http\Client\Response;
 
 class EpisodeSerie
 {
-    public string $airDate;
-    public array $crew; /** @phpstan-ignore-line */
-    public int $episodeNumber;
-    public array $guestStars; /** @phpstan-ignore-line */
-    public string $name;
-    public string $overview;
-    public int $id;
-    public ?string $productionCode;
-    public ?int $runtime;
-    public int $seasonNumber;
-    public ?string $stillPath;
-    public float $voteAverage;
-    public int $voteCount;
     public int $statusCode;
     public string $statusMessage;
 

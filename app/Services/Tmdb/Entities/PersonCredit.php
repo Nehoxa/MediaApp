@@ -6,9 +6,6 @@ use Illuminate\Http\Client\Response;
 
 class PersonCredit
 {
-    public int $id;
-    public array $cast; /** @phpstan-ignore-line */
-    public array $crew; /** @phpstan-ignore-line */
     public int $statusCode;
     public string $statusMessage;
 

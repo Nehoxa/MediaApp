@@ -6,10 +6,6 @@ use Illuminate\Http\Client\Response;
 
 class MediaList
 {
-    public int $page;
-    public array $results; /** @phpstan-ignore-line */
-    public int $totalPages;
-    public int $totalResults;
     public int $statusCode;
     public string $statusMessage;
 
