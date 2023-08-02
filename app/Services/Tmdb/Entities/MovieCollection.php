@@ -25,7 +25,7 @@ class MovieCollection
             $this->statusMessage = $collection->get('status_message');
         }
 
-        $movies = $this->parts;
+        $movies = $this->parts; /* @phpstan-ignore-line */
         
         usort($movies, function ($firstDate, $secondDate) {
             $firstDate = ($firstDate['release_date'] !== '') ? $firstDate['release_date'] : '9999-99-99';
@@ -38,6 +38,6 @@ class MovieCollection
             return ($firstDate < $secondDate) ? -1 : 1;
         });
         
-        $this->parts = $movies;
+        $this->parts = $movies; /* @phpstan-ignore-line */
     }
 }

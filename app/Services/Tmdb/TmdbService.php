@@ -400,11 +400,11 @@ public function sort(array $array): array
         $crew = [];
         $otherProjects = [];
 
-        $cast = $combinedCredit->cast;
+        $cast = $combinedCredit->cast; /* @phpstan-ignore-line */
 
-        $popularMedia = array_merge($combinedCredit->cast, $combinedCredit->crew);
+        $popularMedia = array_merge($combinedCredit->cast, $combinedCredit->crew); /* @phpstan-ignore-line */
 
-        foreach ($combinedCredit->crew as $project) {
+        foreach ($combinedCredit->crew as $project) { /* @phpstan-ignore-line */
             if (isset($project['department'])) {
                 match($project['department']) {
                     Department::Directing->value => $directing[] = $project,

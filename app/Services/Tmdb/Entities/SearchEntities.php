@@ -8,6 +8,9 @@ class SearchEntities
 {
     public int $statusCode;
     public string $statusMessage;
+    public string $query;
+    public int $page;
+    public int $totalPages;
 
     public function __construct(Response $data, string $query)
     {        
@@ -25,6 +28,5 @@ class SearchEntities
             $this->statusCode = $data->status();
             $this->statusMessage = $collection->get('status_message');
         }
-
     }
 }
