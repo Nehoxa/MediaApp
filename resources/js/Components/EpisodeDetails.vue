@@ -2,7 +2,7 @@
   <div className="serie">
     <div className="serie__intro">
       <div className="fade"></div>
-      <img className="serie__backdrop" :src="'https://image.tmdb.org/t/p/original' + episode.still_path" />
+      <img className="serie__backdrop" :src="'https://image.tmdb.org/t/p/original' + episode.stillPath" />
     </div>
     <div className="serie__detail">
       <div className="serie__detailRight">
@@ -11,22 +11,22 @@
             <span className="serie__name">{{ episode.name ? episode.name : "" }}</span>
           </div>
           <div className="serie__rating">
-            <span className="serie__note">{{ episode.vote_average.toFixed(1) }}</span>
+            <span className="serie__note">{{ episode.voteAverage.toFixed(1) }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
               <path fill-rule="evenodd"
                 d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
                 clip-rule="evenodd" />
             </svg>
-            <span className="serie__voteCount">{{ episode.vote_count ? "- (" + episode.vote_count + ") votes" : ""
+            <span className="serie__voteCount">{{ episode.voteCount ? "- (" + episode.voteCount + ") votes" : ""
             }}</span>
           </div>
           <div className="serie__date">
-            <div>{{ episode.air_date ? formatDate(episode.air_date) : '' }}</div>
+            <div>{{ episode.airDate ? formatDate(episode.airDate) : '' }}</div>
           </div>
           <div>
-            <span className="serie__eps">{{ episode.episode_number ? 'Saison ' + episode.episode_number : ""
+            <span className="serie__eps">{{ episode.episodeNumber ? 'Saison ' + episode.episodeNumber : ""
             }}</span>
-            <span className="serie__season">{{ episode.season_number ? ' • Épisode ' + episode.season_number : ""
+            <span className="serie__season">{{ episode.seasonNumber ? ' • Épisode ' + episode.seasonNumber : ""
             }}</span>
             <span className="serie__runtime">{{ episode.runtime ? formatRuntime(episode.runtime) : ""
             }}</span>
@@ -39,7 +39,6 @@
       </div>
     </div>
   </div>
-  <!-- <pre class="text-white">{{ episode }}</pre> -->
 </template>
 
 <script setup>

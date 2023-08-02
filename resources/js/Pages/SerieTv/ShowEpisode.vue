@@ -1,5 +1,5 @@
 <template>
-  <AppLayout>
+  <AppLayout :statusCode="episode.statusCode" :statusMessage="episode.statusMessage" >
     <div class="pb-6 text-white">
       <EpisodeDetails :episode="episode" />
       <EpisodeCredits :credits="credits" />

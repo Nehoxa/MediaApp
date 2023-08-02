@@ -1,17 +1,12 @@
 <template>
-  <AppLayout>
-    <div class="w-full h-full pb-6">
-      <div v-if="!statusMessage">
-        <MovieDetails :movie="movie" />
-        <div>
-          <MovieCredits :credits="credits" />
-        </div>
-        <div>
-          <MovieRelated :relatedMovies="relatedMovies" />
-        </div>
+  <AppLayout :statusCode="movie.statusCode" :statusMessage="movie.statusMessage" >
+    <div class="w-full h-full pb-6" v-if="movie.statusCode === 200">
+      <MovieDetails :movie="movie" />
+      <div>
+        <MovieCredits :credits="credits" />
       </div>
-      <div v-if="statusMessage" class="text-white text-3xl flex justify-center mt-32">
-        {{ statusMessage }}
+      <div>
+        <MovieRelated :relatedMovies="relatedMovies" v-if="relatedMovies.results.length != 0" />
       </div>
     </div>
   </AppLayout>
@@ -27,6 +22,5 @@ const props = defineProps({
   movie: Object,
   credits: Object,
   relatedMovies: Object,
-  statusMessage: String,
 });
 </script>

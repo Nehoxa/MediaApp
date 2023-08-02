@@ -3,12 +3,12 @@
   <div className="movie">
     <div className="movie__intro">
       <div className="fade"></div>
-      <img className="movie__backdrop" :src="'https://image.tmdb.org/t/p/original' + movie.backdrop_path" />
+      <img className="movie__backdrop" :src="'https://image.tmdb.org/t/p/original' + movie.backdropPath" />
     </div>
     <div className="movie__detail">
       <div className="movie__detailLeft">
         <div className="movie__posterBox">
-          <img className="movie__poster" :src="'https://image.tmdb.org/t/p/w400' + movie.poster_path" />
+          <img className="movie__poster" :src="'https://image.tmdb.org/t/p/w400' + movie.posterPath" />
         </div>
       </div>
       <div className="movie__detailRight">
@@ -16,23 +16,23 @@
           <div className="movie__name">{{ movie.title }}</div>
           <div className="movie__tagline">{{ movie.tagline ? movie.tagline : '' }}</div>
           <div className="movie__rating">
-            <span className="movie__note">{{ parseFloat(movie.vote_average.toFixed(1)) }}</span>
+            <span className="movie__note">{{ parseFloat(movie.voteAverage.toFixed(1)) }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
               <path fill-rule="evenodd"
                 d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
                 clip-rule="evenodd" />
             </svg>
-            <span className="movie__voteCount">{{ movie.vote_count ? "- (" + movie.vote_count + ") votes" : "" }}</span>
+            <span className="movie__voteCount">{{ movie.voteCount ? "- (" + movie.voteCount + ") votes" : "" }}</span>
           </div>
           <div className="movie__runtime">{{ movie.runtime ? formatRuntime(movie.runtime) : "" }}</div>
-          <div className="movie__releaseDate">Sorti le {{ formatDate(movie.release_date) }}</div>
+          <div className="movie__releaseDate">Sorti le {{ formatDate(movie.releaseDate) }}</div>
           <div className="movie__genres">
             <span className="movie__genre" v-for="genre in movie.genres" :key="genre.id">{{ genre.name }}</span>
           </div>
         </div>
-        <div className="movie__collection" v-if="movie.belongs_to_collection">
-          <Link :href="route('movie.showCollection', movie.belongs_to_collection.id)">{{ movie.belongs_to_collection ?
-            movie.belongs_to_collection.name : '' }}</Link>
+        <div className="movie__collection" v-if="movie.belongsToCollection">
+          <Link :href="route('movie.showCollection', movie.belongsToCollection.id)">{{ movie.belongsToCollection ?
+            movie.belongsToCollection.name : '' }}</Link>
         </div>
         <div className="movie__detailRightBottom">
           <div className="synopsisText">Synopsis</div>
@@ -46,7 +46,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 
-defineProps({
+const props = defineProps({
   movie: Object
 });
 

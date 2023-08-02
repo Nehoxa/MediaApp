@@ -37,6 +37,8 @@
       </div>
     </div>
     <slot />
+
+    <Error v-if="statusCode != 200" :statusMessage="statusMessage" />
   </div>
 </template>
 
@@ -45,6 +47,12 @@ import { Link } from '@inertiajs/vue3';
 import { useForm } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
 import axios from 'axios';
+import Error from '@/Components/Error.vue'
+
+defineProps({
+  statusCode: Number,
+  statusMessage: String
+})
 
 const form = useForm({
   search: '',
@@ -75,7 +83,6 @@ function getLink(mediaType, id) {
     return route('person.show', id)
   }
 }
-
 
 function submit() {
   router.get(route('search', form));

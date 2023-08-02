@@ -1,29 +1,32 @@
 <template>
-  <AppLayout>
-    <div class="w-full h-full text-white" v-if="!statusMessage">
+  <AppLayout :statusCode="person.statusCode" :statusMessage="person.statusMessage" >
+    <div class="w-full h-full text-white" v-if="person.statusCode === 200">
       <div className="fade"></div>
       <div className="details">
         <div className="image_content">
-          <img className="image" :src="'https://image.tmdb.org/t/p/w200' + person.profile_path" alt="">
+          <img className="image" :src="person.profilePath ? 'https://image.tmdb.org/t/p/w200' + person.profilePath : ''" alt="">
         </div>
         <div className="name">{{ person.name }}</div>
-        <div className="department">Métier : {{ person.known_for_department }}</div>
+        <div className="department">Métier : {{ person.knownForDepartment }}</div>
         <div className="birthday">Naissance : {{ formatDate(person.birthday) }}</div>
+        <div className="birthday">Lieu de naissance : {{ person.placeOfBirth }}</div>
+        <div className="birthday">{{ 'Âge : ' + getOld(person.birthday, person.deathday) + ' ans' }}</div>
+        <div className="birthday"> {{ person.deathday ? 'Décès : ' + formatDate(person.deathday) : '' }}</div>
         <div className="biography" v-if="person.biography">
           <span className="biographyTitle">Biographie :</span>
           {{ person.biography }}
         </div>
       </div>
-      <PersonMediaPopular :popularMedia="popularMedia" v-if="popularMedia.length >= 1" />
-      <CastComponent :cast="cast" v-if="cast.length >= 1" />
-      <DirectingComponent :directing="directing" v-if="directing.length >= 1" />
-      <ProductionComponent :production="production" v-if="production.length >= 1" />
-      <WritingComponent :writing="writing" v-if="writing.length >= 1" />
-      <CreatorComponent :creator="creator" v-if="creator.length >= 1" />
+      <PersonMediaPopular :popularMedia="allMedia.popularMedia" v-if="allMedia.popularMedia.length >= 1" />
+      <CastComponent :cast="allMedia.cast" v-if="allMedia.cast.length >= 1" />
+      <DirectingComponent :directing="allMedia.directing" v-if="allMedia.directing.length >= 1" />
+      <ProductionComponent :production="allMedia.production" v-if="allMedia.production.length >= 1" />
+      <WritingComponent :writing="allMedia.writing" v-if="allMedia.writing.length >= 1" />
+      <CreatorComponent :creator="allMedia.creator" v-if="allMedia.creator.length >= 1" />
     </div>
     <div v-if="statusMessage" class="text-white text-3xl flex justify-center mt-32">
-        {{ statusMessage }}
-      </div>
+      {{ statusMessage }}
+    </div>
   </AppLayout>
 </template>
 
@@ -35,15 +38,11 @@ import DirectingComponent from '@/Components/DirectingComponent.vue';
 import ProductionComponent from '@/Components/ProductionComponent.vue';
 import WritingComponent from '@/Components/WritingComponent.vue';
 import CreatorComponent from '@/Components/CreatorComponent.vue';
+import { differenceInYears } from 'date-fns';
 
 defineProps({
   person: Object,
-  popularMedia: Object,
-  cast: Object,
-  directing: Object,
-  production: Object,
-  writing: Object,
-  creator: Object,
+  allMedia: Object,
   statusMessage: String
 });
 
@@ -51,6 +50,19 @@ function formatDate(date) {
   const dateObj = new Date(date);
   const options = { day: 'numeric', month: 'long', year: 'numeric' };
   return dateObj.toLocaleDateString('fr-FR', options);
+}
+
+function getOld(birth, death) {
+  const birthdate = new Date(birth)
+  
+  if (death) {
+    const deathdate = new Date(death)
+    const age = differenceInYears(deathdate, birthdate)
+    return age
+  }
+  const today = new Date();
+  const age = differenceInYears(today, birthdate)
+  return age
 }
 
 

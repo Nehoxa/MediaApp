@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center">
+  <div class="flex items-center justify-center mt-8">
     <div class="w-11/12">
       <div class="font-bold text-white text-xl mb-3">Recommandation :</div>
       <Swiper :modules="modules" :allowTouchMove="false" :freeMode="{ sticky: true }" :slides-per-view="5" :space-between="50" navigation
