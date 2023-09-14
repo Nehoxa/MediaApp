@@ -1,5 +1,7 @@
 <template>
-  <AppLayout :statusCode="serie.statusCode" :statusMessage="serie.statusMessage" >
+  <Head :title="serie.name" />
+
+  <AppLayout :statusCode="serie.statusCode" :statusMessage="serie.statusMessage">
     <div class="w-full h-full pb-6" v-if="serie.statusCode === 200">
       <TvShowDetails :serie="serie" />
       <TvShowSeason :idTvShow="serie.id" :seasons="serie.seasons" />
@@ -10,6 +12,7 @@
 </template>
 
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import TvShowDetails from '@/Components/TvShowDetails.vue'
 import TvShowSeason from '@/Components/TvShowSeason.vue'

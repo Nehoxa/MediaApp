@@ -1,4 +1,6 @@
 <template>
+    <Head :title="person.name" />
+
   <AppLayout :statusCode="person.statusCode" :statusMessage="person.statusMessage" >
     <div class="w-full h-full text-white" v-if="person.statusCode === 200">
       <div className="fade"></div>
@@ -31,6 +33,7 @@
 </template>
 
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PersonMediaPopular from '@/Components/PersonMediaPopular.vue';
 import CastComponent from '@/Components/CastComponent.vue';

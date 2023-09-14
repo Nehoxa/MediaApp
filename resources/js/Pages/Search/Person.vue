@@ -1,5 +1,7 @@
 <template>
-  <AppLayout :statusCode="results.statusCode" :statusMessage="results.statusMessage" >
+  <Head :title="data.search" />
+
+  <AppLayout :statusCode="results.statusCode" :statusMessage="results.statusMessage">
     <div class="flex flex-col w-full items-center text-white">
       <div class="max-w-screen-2x text-xl mt-8 p-2 border-2 rounded-lg">
         <Link :href="route('search', data)" class="m-8">Tous</Link>
@@ -33,7 +35,7 @@
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 import Pagination from '../../Components/Pagination.vue'
 
 defineProps({

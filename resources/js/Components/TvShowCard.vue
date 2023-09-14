@@ -1,9 +1,9 @@
 <template>
-  <div class="py-3 w-129 3xl:w-130 pb-20 mx-4">
+  <div class="py-3 w-screen sm:w-129 3xl:w-130 sm:pb-20 sm:mx-4">
     <div @click="showMovie(serie.id)"
       class="bg-gray-950 hover:bg-gradient-to-b from-gray-950 to-gray-700 shadow-lg cursor-pointer max-h-80 sm:rounded-3xl p-8 flex space-x-8">
       <div class="h-48 overflow-visible">
-        <img class="rounded-3xl shadow-lg max-w-none" :src="'https://image.tmdb.org/t/p/w200' + serie.poster_path" alt="">
+        <img class="rounded-3xl shadow-lg w-36 sm:w-auto" :src="'https://image.tmdb.org/t/p/w200' + serie.poster_path" alt="">
       </div>
       <div class="flex flex-col w-1/2 space-y-4">
         <div class="flex justify-between items-start">

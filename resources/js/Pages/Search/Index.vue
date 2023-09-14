@@ -1,5 +1,7 @@
 <template>
-  <AppLayout :statusCode="results.statusCode" :statusMessage="results.statusMessage" >
+  <Head :title="data.search" />
+
+  <AppLayout :statusCode="results.statusCode" :statusMessage="results.statusMessage">
     <div class="flex flex-col w-full items-center text-white">
       <div class="max-w-screen-2x text-xl mt-8 p-2 border-2 rounded-lg">
         <Link :href="route('search', data)" class="m-6 p-2 bg-white text-black rounded">Tous</Link>
@@ -20,11 +22,13 @@
               <div class="font-bold hover:text-gray-300 mr-2">{{ result.title ? result.title : result.name }}</div>
               <div class="text-slate-500">{{ result.media_type ? '- ' + getType(result.media_type) : '' }}</div>
             </div>
-            <div class="mb-3 text-gray-300">{{ result.release_date ? formatDate(result.release_date) : formatDate(result.first_air_date) }}</div>
+            <div class="mb-3 text-gray-300">{{ result.release_date ? formatDate(result.release_date) :
+              formatDate(result.first_air_date) }}</div>
             <div>{{ result.overview ? formatedOverview(result.overview, 380) : '' }}</div>
             <div class="flex mt-3">
               <span class="mr-1">{{ result.vote_average ? parseFloat(result.vote_average.toFixed(1)) : '' }}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5" v-if="result.vote_average">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"
+                v-if="result.vote_average">
                 <path fill-rule="evenodd"
                   d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
                   clip-rule="evenodd" />
@@ -41,7 +45,8 @@
               <Link :href="getLink(result.media_type, result.id)" class="font-bold hover:text-gray-300 mr-2">{{
                 result.name ? result.name :
                 '' }}</Link>
-              <div class="mb-3 text-slate-500">{{ result.known_for_department ? '- ' + result.known_for_department : '' }}</div>
+              <div class="mb-3 text-slate-500">{{ result.known_for_department ? '- ' + result.known_for_department : '' }}
+              </div>
             </div>
             <span v-if="result.known_for.length > 0">Connu(e) pour : </span>
             <Link class="hover:text-gray-300" :href="getLink(project.media_type, project.id)"
@@ -50,10 +55,10 @@
           </div>
         </div>
 
-      </Link>
-      <div class="text-xl font-bold mt-12" v-if="results.results.length === 0">
-        Aucun resultat trouvé
-      </div>
+        </Link>
+        <div class="text-xl font-bold mt-12" v-if="results.results.length === 0">
+          Aucun resultat trouvé
+        </div>
       </div>
     </div>
   </AppLayout>
@@ -61,7 +66,7 @@
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 import Pagination from '../../Components/Pagination.vue'
 
 defineProps({

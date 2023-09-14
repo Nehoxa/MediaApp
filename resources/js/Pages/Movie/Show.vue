@@ -1,5 +1,7 @@
 <template>
-  <AppLayout :statusCode="movie.statusCode" :statusMessage="movie.statusMessage" >
+  <Head :title="movie.title" />
+
+  <AppLayout :statusCode="movie.statusCode" :statusMessage="movie.statusMessage">
     <div class="w-full h-full pb-6" v-if="movie.statusCode === 200">
       <MovieDetails :movie="movie" />
       <div>
@@ -13,6 +15,7 @@
 </template>
 
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import MovieDetails from '@/Components/MovieDetails.vue'
 import MovieCredits from '@/Components/MovieCredits.vue'

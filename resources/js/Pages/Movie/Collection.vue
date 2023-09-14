@@ -1,5 +1,7 @@
 <template>
-  <AppLayout :statusCode="collection.statusCode" :statusMessage="collection.statusMessage" >
+  <Head :title="collection.name" />
+
+  <AppLayout :statusCode="collection.statusCode" :statusMessage="collection.statusMessage">
     <div class="pb-6">
       <div className="collection">
         <div className="collection__intro">
@@ -14,7 +16,8 @@
             <div className="collection__detailRight">
               <div className="collection__detailRightTop">
                 <div className="collection__name">{{ collection.name }}</div>
-                <div className="collection__runtime">{{ collection.runtime ? formatRuntime(collection.runtime) : "" }}</div>
+                <div className="collection__runtime">{{ collection.runtime ? formatRuntime(collection.runtime) : "" }}
+                </div>
               </div>
               <div className="collection__detailRightBottom">
                 <div className="synopsisText">Synopsis</div>
@@ -32,6 +35,7 @@
 </template>
 
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import CollectionCard from '@/Components/CollectionCard.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
@@ -162,7 +166,7 @@ defineProps({
 }
 
 @media (min-width: 750px) {
-  
+
   .collection__detail {
     top: 300px;
   }

@@ -1,4 +1,6 @@
 <template>
+  <Head title="Top Series" />
+
   <AppLayout>
     <div class="flex flex-wrap pb-6">
       <div v-for="serie in series.results" :key="serie.id">
@@ -10,6 +12,7 @@
 </template>
 
 <script setup>
+import { Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import TvShowCard from '@/Components/TvShowCard.vue'
 

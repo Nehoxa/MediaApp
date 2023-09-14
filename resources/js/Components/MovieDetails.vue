@@ -258,6 +258,22 @@ function formatRuntime(runtime) {
   justify-content: center;
 }
 
+@media (min-width: 500px) {
+  .movie__detail {
+    top: 250px;
+  }
+}
+
+@media (min-width: 800px) {
+  .movie__detailLeft {
+    display: block;
+  }
+
+  .movie__detailRight {
+    width: 80%;
+  }
+}
+
 @media (min-width: 930px) {
   .movie__detail {
     width: 85%;
@@ -276,19 +292,5 @@ function formatRuntime(runtime) {
   }
 }
 
-@media (min-width: 730px) {
-  .movie__detailLeft {
-    display: block;
-  }
 
-  .movie__detailRight {
-    width: 80%;
-  }
-}
-
-@media (min-width: 500px) {
-  .movie__detail {
-    top: 345px;
-  }
-}
 </style>
