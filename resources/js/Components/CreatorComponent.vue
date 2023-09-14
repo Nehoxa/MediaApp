@@ -60,7 +60,7 @@ function getRouteType(type, id) {
 .title {
   color: white;
   margin-bottom: 2rem;
-  font-size: x-large;
+  font-size: large;
   font-weight: 800;
 }
 
@@ -72,23 +72,41 @@ function getRouteType(type, id) {
 }
 
 .date {
-  font-size: large;
+  font-size: 1rem;
   font-weight: 500;
   width: 180px;
 }
 
 .name {
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .img {
   margin-right: 2rem;
 }
 
-.job {
-  font-weight: 400;
+.character {
+  font-weight: 600;
   font-size: 18px;
-  margin-left: 1rem;
+}
+
+@media (min-width: 500px) {
+  .title {
+    font-size: x-large;
+  }
+
+  .date {
+    font-size: large;
+  }
+
+  .name {
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+
+  .character {
+    font-size: 18px;
+  }
 }
 </style>

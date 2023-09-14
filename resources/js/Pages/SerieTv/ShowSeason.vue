@@ -5,7 +5,7 @@
     <div class="w-full h-full pb-6 text-white">
       <div class="flex justify-center">
         <div class="flex flex-col lg:flex-row w-4/5 items-center">
-          <img class="h-150 rounded-b-lg" :src="'https://image.tmdb.org/t/p/original' + season.posterPath" />
+          <img class="h-auto sm:h-150 rounded-b-lg" :src="'https://image.tmdb.org/t/p/original' + season.posterPath" />
           <div class="mt-8 lg:ml-6 lg:mt-0 flex flex-col items-center lg:items-start">
             <h1 class="text-7xl font-bold">{{ season.seasonNumber ? 'Saison ' + season.seasonNumber : season.name }}</h1>
             <div class="mt-6">{{ season.airDate ? 'Sorti le ' + formatDate(season.airDate) : '' }}</div>
@@ -18,7 +18,7 @@
       <Link :href="route('serie.showEpisode', [episode.show_id, episode.season_number, episode.episode_number])"
         v-for="episode in season.episodes" :key="episode.id"
         class="flex-none justify-center xl:flex xl:justify-start m-16">
-      <img class="h-115 rounded-lg m-6 xl:mx-0" :src="'https://image.tmdb.org/t/p/original' + episode.still_path"
+      <img class="h-auto sm:h-115 rounded-[30px] p-6 xl:mx-0" :src="'https://image.tmdb.org/t/p/original' + episode.still_path"
         v-if="episode.still_path" />
       <div class="mx-6 xl:mr-0 flex items-center">
         <div>

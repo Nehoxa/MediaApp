@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-center mt-24 md:mt-16 xl:mt-0">
+  <div class="flex items-center justify-center mt-16 xl:mt-0">
     <div class="w-11/12">
       <div v-if="seasons.length === 1" class="font-bold text-white text-xl mb-3">Saison :</div>
       <div v-if="seasons.length != 1" class="font-bold text-white text-xl mb-3">Saisons :</div>

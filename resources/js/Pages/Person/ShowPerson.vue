@@ -1,12 +1,12 @@
 <template>
-    <Head :title="person.name" />
+  <Head :title="person.name" />
 
-  <AppLayout :statusCode="person.statusCode" :statusMessage="person.statusMessage" >
+  <AppLayout :statusCode="person.statusCode" :statusMessage="person.statusMessage">
     <div class="w-full h-full text-white" v-if="person.statusCode === 200">
-      <div className="fade"></div>
       <div className="details">
         <div className="image_content">
-          <img className="image" :src="person.profilePath ? 'https://image.tmdb.org/t/p/w200' + person.profilePath : ''" alt="">
+          <img className="image" :src="person.profilePath ? 'https://image.tmdb.org/t/p/w200' + person.profilePath : ''"
+            alt="">
         </div>
         <div className="name">{{ person.name }}</div>
         <div className="department">Métier : {{ person.knownForDepartment }}</div>
@@ -57,7 +57,7 @@ function formatDate(date) {
 
 function getOld(birth, death) {
   const birthdate = new Date(birth)
-  
+
   if (death) {
     const deathdate = new Date(death)
     const age = differenceInYears(deathdate, birthdate)
@@ -72,15 +72,6 @@ function getOld(birth, death) {
 </script>
 
 <style scoped>
-.fade {
-  width: 100%;
-  height: 400px;
-  top: 0px;
-  position: absolute;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.099), rgba(3, 7, 18, 1));
-  z-index: -1;
-}
-
 .details {
   display: flex;
   flex-direction: column;
@@ -107,16 +98,19 @@ function getOld(birth, death) {
 }
 
 .name {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
 }
 
 .department {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .birthday {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
+
+
+
 
 .biography {
   margin-top: 2rem;
@@ -128,5 +122,19 @@ function getOld(birth, death) {
 .biographyTitle {
   font-size: 2rem;
   margin-bottom: 0.5rem;
+}
+
+@media (min-width: 500px) {
+  .name {
+    font-size: 2.5rem;
+  }
+
+  .department {
+    font-size: 1.5rem;
+  }
+
+  .birthday {
+    font-size: 1.5rem;
+  }
 }
 </style>

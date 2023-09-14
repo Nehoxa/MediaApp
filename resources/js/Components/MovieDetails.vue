@@ -35,8 +35,8 @@
             movie.belongsToCollection.name : '' }}</Link>
         </div>
         <div className="movie__detailRightBottom">
-          <div className="synopsisText">Synopsis</div>
-          <div class="">{{ movie.overview }}</div>
+          <div className="synopsis">Synopsis</div>
+          <div class="synopsisText">{{ movie.overview }}</div>
         </div>
       </div>
     </div>
@@ -80,6 +80,7 @@ function formatRuntime(runtime) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 25px;
 }
 
 .movie__intro {
@@ -88,25 +89,20 @@ function formatRuntime(runtime) {
 
 .movie__backdrop {
   width: 100%;
-  height: 600px;
-  object-fit: cover;
+  object-fit: contain;
   object-position: 0 35%;
-  margin-bottom: 300px;
+  margin-bottom: 0px;
 }
 
 .fade {
-  width: 100%;
-  height: 300px;
-  position: absolute;
-  top: 300px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(3, 7, 18, 1));
+  display: none;
 }
 
 .movie__detail {
   align-items: center;
   width: 95%;
   display: flex;
-  position: absolute;
+  position: static;
   top: 250px;
 }
 
@@ -137,7 +133,6 @@ function formatRuntime(runtime) {
   color: white;
   display: flex;
   flex-direction: column;
-  height: 450px;
   width: 100%;
 }
 
@@ -187,7 +182,7 @@ function formatRuntime(runtime) {
   height: fit-content;
 }
 
-.synopsisText {
+.synopsis {
   font-size: 1.5rem;
   margin-top: 0.5rem;
   font-weight: 600;
@@ -196,7 +191,7 @@ function formatRuntime(runtime) {
   align-items: center;
 }
 
-.synopsisText>div:last-of-type {
+.synopsis>div:last-of-type {
   margin-left: auto;
 }
 
@@ -264,7 +259,26 @@ function formatRuntime(runtime) {
   }
 }
 
-@media (min-width: 800px) {
+@media (min-width: 850px) {
+  .movie__backdrop {
+    object-fit: cover;
+    height: 600px;
+    margin-bottom: 300px;
+  }
+
+  .fade {
+    display: block;
+    width: 100%;
+    height: 300px;
+    position: absolute;
+    top: 300px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(3, 7, 18, 1));
+  }
+
+  .movie__detail {
+    position: absolute;
+  }
+
   .movie__detailLeft {
     display: block;
   }
@@ -291,6 +305,4 @@ function formatRuntime(runtime) {
     width: 90%;
   }
 }
-
-
 </style>

@@ -33,7 +33,7 @@
           </div>
           <div className="serie__date">
             <div>{{ formatDate(serie.firstAirDate) + ' - ' + formatDate(serie.lastAirDate) }}</div>
-            <div v-for="vo in serie.spokenLanguages">Version Original : {{ vo.englishName }}</div>
+            <div v-for="vo in serie.spokenLanguages">Version Original : {{ vo.name }}</div>
           </div>
           <div>
             <span className="serie__season">{{ serie.episodeRunTime ? formattedSeason(serie.numberOfSeasons) : ""
@@ -139,25 +139,25 @@ function getStatus(status) {
 
 .serie__backdrop {
   width: 100%;
-  height: 600px;
-  object-fit: cover;
+  object-fit: contain;
   object-position: 0 35%;
-  margin-bottom: 150px;
+  margin-bottom: 0px;
 }
 
 .fade {
-  width: 100%;
+  display: none;
+  /* width: 100%;
   height: 400px;
   position: absolute;
   top: 200px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(3, 7, 18, 1));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(3, 7, 18, 1)); */
 }
 
 .serie__detail {
   align-items: center;
   width: 95%;
   display: flex;
-  position: absolute;
+  position: static;
   top: 0px;
 }
 
@@ -180,7 +180,6 @@ function getStatus(status) {
   color: white;
   display: flex;
   flex-direction: column;
-  height: 450px;
   width: 100%;
 }
 
@@ -346,6 +345,67 @@ function getStatus(status) {
   justify-content: center;
 }
 
+@media (min-width: 850px) {
+  .serie__backdrop {
+  object-fit: cover;
+  height: 600px;
+  margin-bottom: 300px;
+}
+.fade {
+  display: block;
+  width: 100%;
+  height: 400px;
+  position: absolute;
+  top: 200px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(3, 7, 18, 1));
+}
+.serie__detail {
+    position: absolute;
+    top: 200px;
+  }
+
+  .serie__genres {
+    margin: 1.25rem 0;
+    flex-direction: row;
+  }
+  
+  .serie__genre {
+    padding: .5rem;
+    border: 2px solid white;
+    border-radius: 20px;
+    margin-right: 1rem;
+    margin-bottom: 0;
+  }
+  
+  .serie__detailLeft {
+    display: block;
+  }
+  
+  .serie__detailRight {
+    width: 80%;
+  }
+}
+
+
+@media (min-width: 930px) {
+  .serie__detail {
+    width: 85%;
+    top: 345px;
+  }
+  
+  .serie__intro {
+    width: 90%;
+  }
+  
+  .serie__backdrop {
+    width: 100%;
+  }
+  
+  .fade {
+    width: 90%;
+  }
+}
+
 @media (min-width: 1536px) {
   .serie__bottomContainer {
     align-items: center;
@@ -355,55 +415,6 @@ function getStatus(status) {
   .serie__createdBy {
     margin-left: 2rem;
     margin-right: 0;
-  }
-}
-
-@media (min-width: 930px) {
-  .serie__detail {
-    width: 85%;
-    top: 345px;
-  }
-
-  .serie__intro {
-    width: 90%;
-  }
-
-  .serie__backdrop {
-    width: 100%;
-  }
-
-  .fade {
-    width: 90%;
-  }
-
-}
-
-@media (min-width: 870px) {
-  .serie__detail {
-    top: 200px;
-  }
-}
-
-@media (min-width: 730px) {
-  .serie__genres {
-    margin: 1.25rem 0;
-    flex-direction: row;
-  }
-
-  .serie__genre {
-    padding: .5rem;
-    border: 2px solid white;
-    border-radius: 20px;
-    margin-right: 1rem;
-    margin-bottom: 0;
-  }
-
-  .serie__detailLeft {
-    display: block;
-  }
-
-  .serie__detailRight {
-    width: 80%;
   }
 }
 </style>
