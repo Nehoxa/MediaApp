@@ -109,9 +109,6 @@ function getOld(birth, death) {
   font-size: 1rem;
 }
 
-
-
-
 .biography {
   margin-top: 2rem;
   width: 80%;

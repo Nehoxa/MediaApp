@@ -2,7 +2,7 @@
   <div class="flex items-center justify-center mt-16">
     <div class="w-11/12">
       <div class="font-bold text-white text-xl mb-3">Populaire :</div>
-      <Swiper :modules="modules" :allowTouchMove="false" :freeMode="{ sticky: true }" :slides-per-view="7" :space-between="50" navigation
+      <Swiper :modules="modules" :allowTouchMove="false" :freeMode="{ sticky: true }" :slides-per-view="getSlidePerViewRelated()" :space-between="50" navigation
         :mousewheel="{ forceToAxis: true, sensitivity: 2 }">
         <swiper-slide class="card swiper-slide" v-for="media in popularMedia">
           <Link :href="route('movie.show', media.id)" v-if="media.media_type === 'movie'" class="">
@@ -34,6 +34,22 @@ const modules = [Navigation, FreeMode, Mousewheel, A11y];
 const props = defineProps({
   popularMedia: Object
 });
+
+function getSlidePerViewRelated() {
+  const screenWidth = window.innerWidth;
+
+  if (screenWidth >= 1200) {
+    return 6;
+  } else if (screenWidth >= 700) {
+    return 5;
+  } else if (screenWidth >= 800) {
+    return 4;
+  } else if (screenWidth >= 500) {
+    return 3;
+  } else if (screenWidth >= 300) {
+    return 2;
+  }
+}
 
 function getBackdrop(img) {
   if (img != null) {

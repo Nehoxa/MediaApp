@@ -74,7 +74,7 @@ function getRouteType(type, id) {
 .date {
   font-size: 1rem;
   font-weight: 500;
-  width: 180px;
+  max-width: 150px;
 }
 
 .name {
@@ -83,7 +83,8 @@ function getRouteType(type, id) {
 }
 
 .img {
-  margin-right: 2rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
 }
 
 .character {
@@ -98,6 +99,7 @@ function getRouteType(type, id) {
 
   .date {
     font-size: large;
+    width: 180px;
   }
 
   .name {
@@ -108,5 +110,10 @@ function getRouteType(type, id) {
   .character {
     font-size: 18px;
   }
+
+  .img {
+  margin-right: 2rem;
+}
+
 }
 </style>
